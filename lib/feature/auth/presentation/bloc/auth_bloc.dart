@@ -1,5 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../core/utils/exceptions/app_exception.dart';
+import '../../../../core/utils/exceptions/exception_mapper.dart';
 import '../../domain/usecase/login_usecase.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
@@ -23,8 +26,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         password: event.password,
       );
       emit(AuthSuccess(token));
+    } on DioException catch (e) {
+      emit(AuthFailure(mapDioError(e)));
     } catch (e) {
-      emit(AuthFailure(e.toString()));
+      emit(AuthFailure(UnknownException(e.toString())));
     }
   }
 }

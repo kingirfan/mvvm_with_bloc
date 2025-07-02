@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../common/widgets/appname_widget.dart';
 import '../../../../common/widgets/custom_text_fields.dart';
 import '../../../../core/theme/custom_colors.dart';
+import '../../../../core/utils/helpers/ui_helpers.dart';
 import '../../../../core/utils/validators.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_state.dart';
@@ -44,10 +45,8 @@ class _LoginPageState extends State<LoginPage> {
             debugPrint('login success');
             // context.go('/home');
           } else if (state is AuthFailure) {
-            Navigator.of(context).pop(); // dismiss loading
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            Navigator.of(context).pop();
+            showAppError(context, state.error);
           }
         },
         child: SingleChildScrollView(

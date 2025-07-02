@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import '../../../../core/utils/exceptions/app_exception.dart';
+
 abstract class AuthState extends Equatable {
   const AuthState();
 
@@ -21,10 +23,10 @@ class AuthSuccess extends AuthState {
 }
 
 class AuthFailure extends AuthState {
-  final String message;
+  final AppException error;
 
-  const AuthFailure(this.message);
+  const AuthFailure(this.error);
 
   @override
-  List<Object> get props => [message];
+  List<Object> get props => [error];
 }
