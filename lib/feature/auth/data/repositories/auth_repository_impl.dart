@@ -24,4 +24,17 @@ class AuthRepositoryImpl implements AuthRepository {
     await TokenStorage.setToken(token);
     return token;
   }
+
+  @override
+  Future<bool> validateToken(String token) async {
+    try {
+      final response = await _dio.post(
+        Environment.validateToken,
+        options: Options(headers: {'X-Parse-Session-Token': token}),
+      );
+      return response.statusCode == 200;
+    } catch (e) {
+      return false;
+    }
+  }
 }

@@ -16,3 +16,9 @@ class AuthLoginRequested extends AuthEvent {
   @override
   List<Object> get props => [email, password];
 }
+
+
+class ValidateTokenRequested extends AuthEvent {
+  final String token;
+  const ValidateTokenRequested(this.token);
+}

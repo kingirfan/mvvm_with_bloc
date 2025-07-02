@@ -3,16 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../app/enviornment.dart';
-import '../../app/routes.dart'; // for navigatorKey
-import '../../utils/token_storage.dart';
+import '../../app/routes.dart'; // navigatorKey
 import '../../utils/navigation_history.dart';
+import '../../utils/token_storage.dart';
+import '../../utils/exceptions/app_exception.dart';
+import '../dio_client.dart';
 
 class AuthInterceptor extends Interceptor {
+  final _unauthenticatedPaths = ['/login', '/signup', '/validate-token'];
+
   @override
   void onRequest(
-      RequestOptions options,
-      RequestInterceptorHandler handler,
-      ) async {
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    // ✅ Skip token check for whitelisted paths
+    if (_unauthenticatedPaths.any((path) => options.path.contains(path))) {
+      return handler.next(options);
+    }
+
+    // ✅ Get stored token
     final token = await TokenStorage.getToken();
 
     if (token == null) {
@@ -25,19 +35,20 @@ class AuthInterceptor extends Interceptor {
       return _redirectToLogin(handler, "Token expired");
     }
 
-    options.headers['Authorization'] = 'Bearer $token';
+    // ✅ Token valid — attach it to request
+    options.headers['X-Parse-Session-Token'] = token;
     handler.next(options);
   }
 
   Future<bool> _validateToken(String token) async {
     try {
-      final response = await Dio().post(
+      final response = await DioClient.dio.post(
         Environment.validateToken,
         data: {},
         options: Options(
           headers: {
             ...Environment.defaultHeaders,
-            'Authorization': 'Bearer $token',
+            'X-Parse-Session-Token': token,
           },
         ),
       );
@@ -54,24 +65,26 @@ class AuthInterceptor extends Interceptor {
     final context = navigatorKey.currentContext;
 
     if (context != null) {
-      // ✅ Fixed: get current route properly
-      NavigationHistory.lastAttemptedRoute = GoRouter.of(
-        context,
-      ).routerDelegate.currentConfiguration.uri.toString();
+      // ✅ Save current route
+      final router = GoRouter.of(context);
+      final uri = router.routerDelegate.currentConfiguration.uri.toString();
+      NavigationHistory.lastAttemptedRoute = uri;
 
-      GoRouter.of(context).go('/login');
+      router.go('/login');
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("🔐 Session expired: $reason")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("🔐 Session expired: $reason")),
+      );
     }
 
     handler.reject(
       DioException(
         requestOptions: RequestOptions(path: ''),
         type: DioExceptionType.cancel,
-        error: 'Session expired',
+        error: const UnauthorizedException(),
       ),
+      true,
     );
   }
+
 }

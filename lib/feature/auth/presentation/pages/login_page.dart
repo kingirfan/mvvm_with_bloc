@@ -1,11 +1,13 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../common/widgets/appname_widget.dart';
 import '../../../../common/widgets/custom_text_fields.dart';
 import '../../../../core/theme/custom_colors.dart';
 import '../../../../core/utils/helpers/ui_helpers.dart';
+import '../../../../core/utils/navigation_history.dart';
 import '../../../../core/utils/validators.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_state.dart';
@@ -42,8 +44,15 @@ class _LoginPageState extends State<LoginPage> {
             );
           } else if (state is AuthSuccess) {
             Navigator.of(context).pop();
-            debugPrint('login success');
-            // context.go('/home');
+
+            final lastRoute = NavigationHistory.lastAttemptedRoute;
+            if (lastRoute != null && lastRoute != '/login') {
+              GoRouter.of(context).go(lastRoute);
+              NavigationHistory.clear();
+            } else {
+              GoRouter.of(context).go('/home');
+            }
+
           } else if (state is AuthFailure) {
             Navigator.of(context).pop();
             showAppError(context, state.error);
