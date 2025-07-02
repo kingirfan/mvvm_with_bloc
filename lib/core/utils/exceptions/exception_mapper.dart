@@ -10,7 +10,13 @@ AppException mapDioError(DioException e) {
   }
 
   if (e.type == DioExceptionType.badResponse) {
-    return const ServerException();
+    final data = e.response?.data;
+
+    if (data is Map<String, dynamic> && data.containsKey('error')) {
+      return ServerException(data['error']);
+    }
+
+    return const ServerException(); // fallback
   }
 
   if (e.type == DioExceptionType.cancel && e.error is AppException) {

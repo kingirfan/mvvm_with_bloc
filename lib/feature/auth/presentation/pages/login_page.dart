@@ -52,7 +52,6 @@ class _LoginPageState extends State<LoginPage> {
             } else {
               GoRouter.of(context).go('/home');
             }
-
           } else if (state is AuthFailure) {
             Navigator.of(context).pop();
             showAppError(context, state.error);
@@ -190,7 +189,7 @@ class _LoginPageState extends State<LoginPage> {
                             height: 50,
                             child: OutlinedButton(
                               onPressed: () {
-                                // Get.toNamed(PagesRoutes.signUpRoute);
+                                GoRouter.of(context).go('/register');
                               },
                               style: OutlinedButton.styleFrom(
                                 side: const BorderSide(

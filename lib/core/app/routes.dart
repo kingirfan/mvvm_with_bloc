@@ -44,6 +44,7 @@
 //   },
 // );
 
+import 'package:bloc_with_mvvm/feature/auth/presentation/pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -69,6 +70,10 @@ final router = GoRouter(
       builder: (context, state) => const SplashPage(),
     ),
     GoRoute(
+      path: '/register',
+      name: 'register',
+      builder: (context, state) => const SignUpPage(),
+    ),GoRoute(
       path: '/home',
       name: 'home',
       builder: (context, state) => const HomeOage(),

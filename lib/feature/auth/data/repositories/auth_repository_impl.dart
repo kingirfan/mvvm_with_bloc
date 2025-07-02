@@ -37,4 +37,29 @@ class AuthRepositoryImpl implements AuthRepository {
       return false;
     }
   }
+
+  @override
+  Future<String> signUp({
+    required String email,
+    required String password,
+    required String fullName,
+    required String phone,
+    required String cpf,
+  }) async {
+    final response = await _dio.post(
+      Environment.signUp,
+      data: {
+        'email': email,
+        'password': password,
+        'fullname': fullName,
+        'phone': phone,
+        'cpf': cpf,
+      },
+      options: Options(headers: Environment.defaultHeaders),
+    );
+
+    final token = response.data['result']['token'];
+    await TokenStorage.setToken(token);
+    return token;
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:bloc_with_mvvm/feature/auth/domain/usecase/sign_up_usecase.dart';
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 
@@ -20,9 +21,14 @@ Future<void> setUpLocator() async {
   // UseCases
   sl.registerLazySingleton(() => ValidateTokenUseCase(sl()));
   sl.registerLazySingleton(() => LoginUseCase(sl()));
+  sl.registerLazySingleton(() => SignUpUseCase(sl()));
 
   // BLoCs
   sl.registerFactory(
-    () => AuthBloc(validateTokenUseCase: sl(), loginUseCase: sl()),
+    () => AuthBloc(
+      validateTokenUseCase: sl(),
+      loginUseCase: sl(),
+      signUpUseCase: sl(),
+    ),
   );
 }
