@@ -1,0 +1,50 @@
+name: bloc_with_mvvm
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  # State Management
+  flutter_bloc: ^8.1.5
+  equatable: ^2.0.5
+
+  # Networking
+  dio: ^5.4.3+1
+
+  # Result handling
+  dartz: ^0.10.1
+
+  # Localization
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
+  # Connectivity
+  connectivity_plus: ^6.0.3
+
+  # Persistent storage
+  shared_preferences: ^2.2.2
+
+  # Logging (optional but helpful)
+  logger: ^2.0.2+1
+  google_fonts: ^6.2.1
+  go_router: ^15.1.3
+  animated_text_kit: ^4.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  assets:
+    - assets/lang/

@@ -1,0 +1,8 @@
+{
+  "login": "Login",
+  "register": "Register",
+  "email": "Email",
+  "password": "Password",
+  "welcome": "Welcome to the App",
+  "token_refreshed": "Token refreshed"
+}
