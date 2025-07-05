@@ -7,7 +7,7 @@ class Validators {
   }
 
   static String? validatePassword(String? value) {
-    if (value == null || value.length < 3) return 'Password must be at least 6 characters';
+    if (value == null || value.length < 3) return 'Password must be at least 3 characters';
     return null;
   }
 
