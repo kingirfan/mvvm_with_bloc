@@ -32,7 +32,7 @@ void main() {
     const token = 'valid_token';
 
     when(
-          () => mockAuthRepository.validateToken(token),
+      () => mockAuthRepository.validateToken(token),
     ).thenAnswer((invocation) async => false);
 
     final result = await validateTokenUseCase(token);
@@ -41,6 +41,4 @@ void main() {
 
     verify(() => mockAuthRepository.validateToken(token)).called(1);
   });
-
-
 }
