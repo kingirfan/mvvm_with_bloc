@@ -1,4 +1,5 @@
 import 'package:bloc_with_mvvm/feature/auth/presentation/pages/sign_up_page.dart';
+import 'package:bloc_with_mvvm/feature/home/presentation/pages/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -33,11 +34,11 @@ final router = GoRouter(
       builder: (context, state) => const HomeOage(),
     ),
     // Add routes like cart, fav etc.
-    // GoRoute(
-    //   path: '/cart',
-    //   name: 'cart',
-    //   builder: (context, state) => const CartPage(),
-    // ),
+    GoRoute(
+      path: '/cart',
+      name: 'cart',
+      builder: (context, state) => const CartScreen(),
+    ),
   ],
   // ✅ Let splash decide redirection — don't check token here
   redirect: (_, __) => null,

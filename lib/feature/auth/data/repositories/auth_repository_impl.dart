@@ -5,9 +5,10 @@ import '../../../../core/utils/token_storage.dart';
 import '../../domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
-  AuthRepositoryImpl(this._dio);
+  AuthRepositoryImpl(this._dio, this.tokenStorage);
 
   final Dio _dio;
+  final TokenStorage tokenStorage;
 
   @override
   Future<String> login({
@@ -21,7 +22,8 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     final token = response.data['result']['token'];
-    await TokenStorage.setToken(token);
+    // await TokenStorage.setToken(token);
+    await tokenStorage.setToken(token);
     return token;
   }
 
@@ -59,7 +61,9 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     final token = response.data['result']['token'];
-    await TokenStorage.setToken(token);
+    // await TokenStorage.setToken(token);
+    await tokenStorage.setToken(token);
+    ;
     return token;
   }
 }

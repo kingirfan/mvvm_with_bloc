@@ -22,8 +22,8 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final token = await TokenStorage.getToken();
-      print('🔐 Token at splash: $token');
+      // final token = await TokenStorage.getToken();
+      // print('🔐 Token at splash: $token');
       await Future.delayed(const Duration(seconds: 2)); // optional
       viewModel.validateSession(context);
     });
