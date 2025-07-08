@@ -5,6 +5,14 @@ abstract class AppException implements Exception {
 
   @override
   String toString() => message;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is AppException && runtimeType == other.runtimeType && message == other.message;
+
+  @override
+  int get hashCode => message.hashCode;
 }
 
 class NetworkException extends AppException {
