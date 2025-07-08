@@ -1,5 +1,3 @@
-
-
 import '../repository/auth_repository.dart';
 
 class ValidateTokenUseCase {
