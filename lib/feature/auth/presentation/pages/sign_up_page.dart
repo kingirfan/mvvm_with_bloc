@@ -19,7 +19,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-
   final SignUpViewModel signUpViewModel = SignUpViewModel();
 
   @override
@@ -30,9 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: CustomColors.customSwatchColor,
       body: BlocListener<AuthBloc, AuthState>(
@@ -91,38 +88,51 @@ class _SignUpPageState extends State<SignUpPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             CustomTextField(
+                              key: const Key('email_field'),
                               label: 'Email',
                               icon: Icons.email,
-                              textEditingController: signUpViewModel.emailController,
+                              textEditingController:
+                                  signUpViewModel.emailController,
                               validator: Validators.validateEmail,
-                              onSaved: (value) {},
                             ),
                             CustomTextField(
-                              textEditingController: signUpViewModel.passwordController,
+                              key: const Key('password_field'),
+                              textEditingController:
+                                  signUpViewModel.passwordController,
                               label: 'Password',
                               validator: Validators.validatePassword,
                               icon: Icons.lock,
-                              onSaved: (value) {},
                               isSecret: true,
                             ),
                             CustomTextField(
+                              key: const Key('name'),
                               label: 'Name',
                               icon: Icons.person,
-                              textEditingController: signUpViewModel.fullNameController,
-                              onSaved: (value) {},
+                              validator: (value) =>
+                                  Validators.validateField(value, 'Name'),
+                              textEditingController:
+                                  signUpViewModel.fullNameController,
                             ),
                             CustomTextField(
+                              key: const Key('phone_number'),
                               label: 'Phone Number',
                               icon: Icons.phone,
-                              onSaved: (value) {},
-                              textEditingController: signUpViewModel.phoneController,
+                              validator: (value) => Validators.validateField(
+                                value,
+                                'Phone Number',
+                              ),
+                              textEditingController:
+                                  signUpViewModel.phoneController,
                               textInputType: TextInputType.phone,
                             ),
                             CustomTextField(
+                              key: const Key('cpf'),
                               label: 'CPF',
-                              textEditingController: signUpViewModel.cpfController,
+                              validator: (value) =>
+                                  Validators.validateField(value, 'CPF'),
+                              textEditingController:
+                                  signUpViewModel.cpfController,
                               icon: Icons.file_copy,
-                              onSaved: (value) {},
                               textInputType: TextInputType.number,
                             ),
                             SizedBox(
@@ -150,9 +160,14 @@ class _SignUpPageState extends State<SignUpPage> {
                   top: 10,
                   child: SafeArea(
                     child: IconButton(
-                      onPressed: () {},
+                      key: const Key('back'),
+                      onPressed: () {
+                        context.pop();
+                      },
                       icon: const Icon(
-                          Icons.arrow_back_ios, color: Colors.white),
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),

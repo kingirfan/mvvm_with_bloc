@@ -9,9 +9,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
 
-class FakeAuthEvent extends Fake implements AuthEvent {}
+class FakeAuthEvent extends Mock implements AuthEvent {}
 
-class FakeAuthState extends Fake implements AuthState {}
+class FakeAuthState extends Mock implements AuthState {}
 
 class MockNavigatorObserver extends Mock implements NavigatorObserver {}
 
@@ -20,7 +20,6 @@ class MockAuthBlock extends MockBloc<AuthEvent, AuthState>
 
 void main() {
   late MockAuthBlock mockAuthBloc;
-  final mockObserver = MockNavigatorObserver();
 
   setUpAll(() {
     registerFallbackValue(FakeAuthEvent());
@@ -33,14 +32,10 @@ void main() {
   });
 
   Widget createWidget() {
-
     final router = GoRouter(
       initialLocation: '/',
       routes: [
-        GoRoute(
-          path: '/',
-          builder: (context, state) => const LoginPage(),
-        ),
+        GoRoute(path: '/', builder: (context, state) => const LoginPage()),
         GoRoute(
           path: '/home',
           builder: (context, state) => const Scaffold(body: Text('Home Page')),
@@ -48,7 +43,8 @@ void main() {
 
         GoRoute(
           path: '/register',
-          builder: (context, state) => const Scaffold(body: Text('Register Page')),
+          builder: (context, state) =>
+              const Scaffold(body: Text('Register Page')),
         ),
       ],
     );
@@ -56,20 +52,9 @@ void main() {
     return MaterialApp.router(
       routerConfig: router,
       builder: (context, child) {
-        return BlocProvider<AuthBloc>.value(
-          value: mockAuthBloc,
-          child: child!,
-        );
+        return BlocProvider<AuthBloc>.value(value: mockAuthBloc, child: child!);
       },
     );
-
-    // return MaterialApp(
-    //   navigatorObservers: [mockObserver],
-    //   home: BlocProvider<AuthBloc>.value(
-    //     value: mockAuthBloc,
-    //     child: const LoginPage(),
-    //   ),
-    // );
   }
 
   testWidgets('shows CircularProgressIndicator on AuthLoading', (tester) async {
@@ -127,29 +112,27 @@ void main() {
     ).called(1);
   });
 
-  testWidgets('navigates to /home on AuthSuccess with no last route',
-          (WidgetTester tester) async {
-        whenListen(
-          mockAuthBloc,
-          Stream.fromIterable([
-            AuthLoading(),
-            const AuthSuccess('valid_token'),
-          ]),
-          initialState: AuthInitial(),
-        );
+  testWidgets('navigates to /home on AuthSuccess with no last route', (
+    WidgetTester tester,
+  ) async {
+    whenListen(
+      mockAuthBloc,
+      Stream.fromIterable([AuthLoading(), const AuthSuccess('valid_token')]),
+      initialState: AuthInitial(),
+    );
 
-        await tester.pumpWidget(createWidget());
+    await tester.pumpWidget(createWidget());
 
-        // Let the AuthSuccess be handled
-        await tester.pumpAndSettle();
+    // Let the AuthSuccess be handled
+    await tester.pumpAndSettle();
 
-        // No exception = success
-        expect(find.text('Home Page'), findsOneWidget);
-      });
+    // No exception = success
+    expect(find.text('Home Page'), findsOneWidget);
+  });
 
-
-
-  testWidgets('navigates to register screen on Sign Up tap', (widgetTester) async {
+  testWidgets('navigates to register screen on Sign Up tap', (
+    widgetTester,
+  ) async {
     await widgetTester.pumpWidget(createWidget());
     await widgetTester.pumpAndSettle();
 
@@ -164,5 +147,4 @@ void main() {
     // Verify navigation to /register happened
     expect(find.text('Register Page'), findsOneWidget);
   });
-
 }

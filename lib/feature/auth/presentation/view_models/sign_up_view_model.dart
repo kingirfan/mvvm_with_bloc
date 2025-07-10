@@ -7,11 +7,11 @@ import '../bloc/auth_bloc.dart';
 class SignUpViewModel {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final emailController = TextEditingController(text: 'z.z@gmail.com');
-  final passwordController = TextEditingController(text: 'irfan');
-  final fullNameController = TextEditingController(text: 'irfan');
-  final phoneController = TextEditingController(text: '(99) 99999-9999');
-  final cpfController = TextEditingController(text: '123.456.789-10');
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final fullNameController = TextEditingController();
+  final phoneController = TextEditingController();
+  final cpfController = TextEditingController();
 
   void signUp(BuildContext context) {
     if (!formKey.currentState!.validate()) return;
