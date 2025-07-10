@@ -103,41 +103,56 @@ class _LoginPageState extends State<LoginPage> {
                         top: Radius.circular(45),
                       ),
                     ),
-                    child: Form(
-                      key: viewModel.formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          CustomTextField(
-                            label: 'Email',
-                            icon: Icons.email,
-                            validator: Validators.validateEmail,
-                            textEditingController: viewModel.emailController,
-                          ),
-                          CustomTextField(
-                            label: 'Password',
-                            icon: Icons.lock,
-                            isSecret: true,
-                            validator: (value) =>
-                                Validators.validatePassword(value),
-                            textEditingController: viewModel.passwordController,
-                          ),
-                          SizedBox(
-                            height: 50,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18),
-                                ),
-                              ),
-                              onPressed: () {
-                                viewModel.login(context);
-                                //  Get.offNamed(PagesRoutes.baseRoute);
-                              },
-                              child: const Text('Login'),
+                    child: LayoutBuilder(
+                      builder: (context, constraints) {
+                        return SingleChildScrollView(
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: constraints.maxHeight,
                             ),
-                          ),
-                          /*Align(
+                            child: IntrinsicHeight(
+                              child: Form(
+                                key: viewModel.formKey,
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: [
+                                    CustomTextField(
+                                      label: 'Email',
+                                      key: const Key('email_field'),
+                                      icon: Icons.email,
+                                      validator: Validators.validateEmail,
+                                      textEditingController:
+                                          viewModel.emailController,
+                                    ),
+                                    CustomTextField(
+                                      label: 'Password',
+                                      key: const Key('password_field'),
+                                      icon: Icons.lock,
+                                      isSecret: true,
+                                      validator: (value) =>
+                                          Validators.validatePassword(value),
+                                      textEditingController:
+                                          viewModel.passwordController,
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              18,
+                                            ),
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          viewModel.login(context);
+                                          //  Get.offNamed(PagesRoutes.baseRoute);
+                                        },
+                                        child: const Text('Login'),
+                                      ),
+                                    ),
+                                    /*Align(
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () async {
@@ -162,49 +177,60 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),*/
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Divider(
-                                    thickness: 2,
-                                    color: Colors.grey.withAlpha(90),
-                                  ),
-                                ),
-                                const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 15),
-                                  child: Text('Or'),
-                                ),
-                                Expanded(
-                                  child: Divider(
-                                    thickness: 2,
-                                    color: Colors.grey.withAlpha(90),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 50,
-                            child: OutlinedButton(
-                              onPressed: () {
-                                GoRouter.of(context).go('/register');
-                              },
-                              style: OutlinedButton.styleFrom(
-                                side: const BorderSide(
-                                  width: 2,
-                                  color: Colors.green,
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(18),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                        bottom: 10,
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Divider(
+                                              thickness: 2,
+                                              color: Colors.grey.withAlpha(90),
+                                            ),
+                                          ),
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
+                                              horizontal: 15,
+                                            ),
+                                            child: Text('Or'),
+                                          ),
+                                          Expanded(
+                                            child: Divider(
+                                              thickness: 2,
+                                              color: Colors.grey.withAlpha(90),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 50,
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          GoRouter.of(context).go('/register');
+                                        },
+                                        style: OutlinedButton.styleFrom(
+                                          side: const BorderSide(
+                                            width: 2,
+                                            color: Colors.green,
+                                          ),
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              18,
+                                            ),
+                                          ),
+                                        ),
+                                        child: const Text('Sign Up'),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              child: const Text('Sign Up'),
                             ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
                     ),
                   ),
                 ),

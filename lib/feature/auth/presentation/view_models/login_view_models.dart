@@ -7,8 +7,8 @@ import '../bloc/auth_event.dart';
 class LoginViewModel {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final emailController = TextEditingController(text: 'king@gmail.com');
-  final passwordController = TextEditingController(text: 'irfan');
+  final emailController = TextEditingController(text: '');
+  final passwordController = TextEditingController(text: '');
 
   void login(BuildContext context) {
     if (!formKey.currentState!.validate()) return;
