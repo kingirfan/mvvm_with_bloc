@@ -10,22 +10,48 @@ void main() {
     tokenStorage = TokenStorageImpl();
   });
 
-  test('should save and retrieve token', () async {
-    const testToken = 'dummy_token';
+  test('should store token using SharedPreferences', () async {
+    const token = 'sample_token';
 
-    await tokenStorage.setToken(testToken);
-    final result = await tokenStorage.getToken();
+    await tokenStorage.setToken(token);
 
-    expect(result, testToken);
+    final prefs = await SharedPreferences.getInstance();
+    expect(prefs.getString('auth_token'), token);
   });
 
-  test('should clear token', () async {
-    const testToken = 'dummy_token';
+  test('should retrieve token from SharedPreferences', () async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth_token', 'my_token');
 
-    await tokenStorage.setToken(testToken);
+    final token = await tokenStorage.getToken();
+    expect(token, 'my_token');
+  });
+
+  test('should clear token from SharedPreferences', () async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth_token', 'my_token');
+
     await tokenStorage.clear();
-    final result = await tokenStorage.getToken();
 
-    expect(result, isNull);
+    expect(prefs.getString('auth_token'), isNull);
   });
+
+  // test('should save and retrieve token', () async {
+  //   const testToken = 'dummy_token';
+  //
+  //   await tokenStorage.setToken(testToken);
+  //   final result = await tokenStorage.getToken();
+  //
+  //   expect(result, testToken);
+  // });
+  //
+  // test('should clear token', () async {
+  //   const testToken = 'dummy_token';
+  //
+  //   await tokenStorage.setToken(testToken);
+  //   await tokenStorage.clear();
+  //   final result = await tokenStorage.getToken();
+  //
+  //   expect(result, isNull);
+  // });
 }
