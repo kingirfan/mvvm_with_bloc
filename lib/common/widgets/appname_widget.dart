@@ -4,29 +4,25 @@ import '../../core/theme/custom_colors.dart';
 
 class AppNameWidget extends StatelessWidget {
   final Color? greenColorTitle;
-  final double textSize;
 
-  const AppNameWidget({super.key, this.greenColorTitle, this.textSize = 30});
+  const AppNameWidget({super.key, this.greenColorTitle});
 
   @override
   Widget build(BuildContext context) {
-    return Text.rich(
-      TextSpan(
-        style: TextStyle(fontSize: textSize),
+    return RichText(
+      text: TextSpan(
+        style: const TextStyle(
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+        ),
         children: [
           TextSpan(
             text: 'Green',
-            style: TextStyle(
-              color: greenColorTitle ?? CustomColors.customSwatchColor,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: greenColorTitle ?? Colors.green),
           ),
-          TextSpan(
+          const TextSpan(
             text: 'grocer',
-            style: TextStyle(
-              color: CustomColors.customContrastColor,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: Colors.black),
           ),
         ],
       ),

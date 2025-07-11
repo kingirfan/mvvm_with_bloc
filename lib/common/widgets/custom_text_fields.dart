@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -27,7 +26,7 @@ class CustomTextField extends StatefulWidget {
     this.onSaved,
     this.textEditingController,
     this.textInputType,
-    this.formFieldKey
+    this.formFieldKey,
   });
 
   @override
@@ -59,23 +58,23 @@ class _CustomTextFieldState extends State<CustomTextField> {
         validator: widget.validator,
         onSaved: widget.onSaved,
         decoration: InputDecoration(
-            isDense: true,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(18),
-            ),
-            prefixIcon: Icon(widget.icon),
-            suffixIcon: widget.isSecret
-                ? IconButton(
-              onPressed: () {
-                setState(() {
-                  isObscure = !isObscure;
-                });
-              },
-              icon: Icon(
-                  isObscure ? Icons.visibility : Icons.visibility_off),
-            )
-                : null,
-            label: Text(widget.label)),
+          isDense: true,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(18)),
+          prefixIcon: Icon(widget.icon),
+          suffixIcon: widget.isSecret
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isObscure = !isObscure;
+                    });
+                  },
+                  icon: Icon(
+                    isObscure ? Icons.visibility : Icons.visibility_off,
+                  ),
+                )
+              : null,
+          label: Text(widget.label),
+        ),
       ),
     );
   }

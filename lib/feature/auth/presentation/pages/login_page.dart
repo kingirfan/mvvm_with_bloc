@@ -69,7 +69,6 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       const AppNameWidget(
                         greenColorTitle: Colors.white,
-                        textSize: 40,
                       ),
                       SizedBox(
                         height: 30,
