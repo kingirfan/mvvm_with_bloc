@@ -43,7 +43,10 @@ class _LoginPageState extends State<LoginPage> {
               builder: (_) => const Center(child: CircularProgressIndicator()),
             );
           } else if (state is AuthSuccess) {
-            Navigator.of(context).pop();
+            // Navigator.of(context).pop();
+            if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
 
             final lastRoute = NavigationHistory.lastAttemptedRoute;
             if (lastRoute != null && lastRoute != '/login') {

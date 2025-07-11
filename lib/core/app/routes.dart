@@ -5,43 +5,55 @@ import 'package:go_router/go_router.dart';
 
 import '../../feature/auth/presentation/pages/login_page.dart';
 import '../../feature/auth/presentation/pages/splash_page.dart';
-import '../../feature/home/presentation/pages/home_oage.dart';
-// import '../../feature/home/presentation/pages/home_page.dart';
+import '../../feature/home/presentation/pages/home_page.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-final router = GoRouter(
-  navigatorKey: navigatorKey,
-  initialLocation: '/splash',
-  routes: [
-    GoRoute(
-      path: '/login',
-      name: 'login',
-      builder: (context, state) => const LoginPage(),
-    ),
-    GoRoute(
-      path: '/splash',
-      name: 'splash',
-      builder: (context, state) => const SplashPage(),
-    ),
-    GoRoute(
-      path: '/register',
-      name: 'register',
-      builder: (context, state) => const SignUpPage(),
-    ),GoRoute(
-      path: '/home',
-      name: 'home',
-      builder: (context, state) => const HomeOage(),
-    ),
-    // Add routes like cart, fav etc.
-    GoRoute(
-      path: '/cart',
-      name: 'cart',
-      builder: (context, state) => const CartScreen(),
-    ),
-  ],
-  // ✅ Let splash decide redirection — don't check token here
-  redirect: (_, __) => null,
-);
+/// Default router instance (used in prod app)
+final router = buildRouter();
 
-
+/// Builds a fresh GoRouter (for tests or overrides)
+GoRouter buildRouter({String initialLocation = '/splash'}) {
+  return GoRouter(
+    navigatorKey: navigatorKey,
+    initialLocation: initialLocation,
+    routes: [
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        pageBuilder: (context, state) =>
+            MaterialPage(key: state.pageKey, child: const LoginPage()),
+      ),
+      GoRoute(
+        path: '/splash',
+        name: 'splash',
+        pageBuilder: (context, state) =>
+            MaterialPage(key: state.pageKey, child: const SplashPage()),
+      ),
+      GoRoute(
+        path: '/register',
+        name: 'register',
+        pageBuilder: (context, state) =>
+            MaterialPage(key: state.pageKey, child: const SignUpPage()),
+      ),
+      GoRoute(
+        path: '/home',
+        name: 'home',
+        pageBuilder: (context, state) =>
+            MaterialPage(key: state.pageKey, child: const HomePage()),
+      ),
+    ],
+    redirect: (context, state) {
+      // Add authentication logic here if needed
+      return null;
+    },
+    errorBuilder: (context, state) => Scaffold(
+      body: Center(
+        child: Text(
+          'Route not found: ${state.uri.toString()}',
+          style: const TextStyle(fontSize: 16),
+        ),
+      ),
+    ),
+  );
+}

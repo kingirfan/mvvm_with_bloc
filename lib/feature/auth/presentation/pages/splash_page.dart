@@ -15,7 +15,7 @@ class SplashPage extends StatefulWidget {
   State<SplashPage> createState() => _SplashPageState();
 }
 
-class _SplashPageState extends State<SplashPage> {
+/*class _SplashPageState extends State<SplashPage> {
   final SplashViewModel viewModel = SplashViewModel();
 
   @override
@@ -27,6 +27,53 @@ class _SplashPageState extends State<SplashPage> {
       await Future.delayed(const Duration(seconds: 2)); // optional
       viewModel.validateSession(context);
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        if (state is AuthSuccess) {
+          final lastRoute = NavigationHistory.lastAttemptedRoute;
+          if (lastRoute != null && lastRoute != '/login') {
+            GoRouter.of(context).go(lastRoute);
+            NavigationHistory.clear();
+          } else {
+            GoRouter.of(context).go('/home');
+          }
+        } else if (state is AuthFailure) {
+          GoRouter.of(context).go('/login');
+        }
+      },
+      child: const Scaffold(body: Center(child: CircularProgressIndicator())),
+    );
+  }
+}*/
+
+
+class _SplashPageState extends State<SplashPage> {
+  final SplashViewModel viewModel = SplashViewModel();
+  bool _isDisposed = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _startValidation();
+    });
+  }
+
+  void _startValidation() async {
+    await Future.delayed(const Duration(seconds: 2));
+    if (_isDisposed) return;
+    viewModel.validateSession(context);
+  }
+
+  @override
+  void dispose() {
+    _isDisposed = true;
+    super.dispose();
   }
 
   @override
