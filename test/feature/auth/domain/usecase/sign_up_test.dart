@@ -1,5 +1,4 @@
 import 'package:bloc_with_mvvm/feature/auth/domain/repository/auth_repository.dart';
-import 'package:bloc_with_mvvm/feature/auth/domain/usecase/login_usecase.dart';
 import 'package:bloc_with_mvvm/feature/auth/domain/usecase/sign_up_usecase.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

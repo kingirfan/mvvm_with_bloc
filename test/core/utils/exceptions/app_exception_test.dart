@@ -1,7 +1,5 @@
 import 'package:bloc_with_mvvm/core/utils/exceptions/app_exception.dart';
 import 'package:bloc_with_mvvm/core/utils/exceptions/exception_mapper.dart';
-import 'package:bloc_with_mvvm/core/utils/exceptions/exception_mapper.dart'
-    as ExceptionMapper;
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 

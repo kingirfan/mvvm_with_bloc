@@ -1,5 +1,4 @@
 import 'package:bloc_test/bloc_test.dart';
-import 'package:bloc_with_mvvm/core/utils/exceptions/app_exception.dart';
 import 'package:bloc_with_mvvm/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bloc_with_mvvm/feature/auth/presentation/bloc/auth_event.dart';
 import 'package:bloc_with_mvvm/feature/auth/presentation/bloc/auth_state.dart';

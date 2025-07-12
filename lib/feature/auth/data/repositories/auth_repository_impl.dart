@@ -63,7 +63,6 @@ class AuthRepositoryImpl implements AuthRepository {
     final token = response.data['result']['token'];
     // await TokenStorage.setToken(token);
     await tokenStorage.setToken(token);
-    ;
     return token;
   }
 }

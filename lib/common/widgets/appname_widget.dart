@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../core/theme/custom_colors.dart';
 
 class AppNameWidget extends StatelessWidget {
   final Color? greenColorTitle;

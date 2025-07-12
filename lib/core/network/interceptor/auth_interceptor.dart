@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:go_router/go_router.dart';
 
-import '../../app/routes.dart';
 import '../../utils/exceptions/app_exception.dart';
 import '../../utils/helpers/navigation_service.dart';
 import '../../utils/helpers/token_validator.dart';

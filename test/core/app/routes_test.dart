@@ -8,9 +8,7 @@ import 'package:bloc_with_mvvm/feature/auth/presentation/bloc/auth_bloc.dart';
 import 'package:bloc_with_mvvm/feature/auth/presentation/bloc/auth_event.dart';
 import 'package:bloc_with_mvvm/feature/auth/presentation/bloc/auth_state.dart';
 import 'package:bloc_with_mvvm/feature/auth/presentation/pages/login_page.dart';
-import 'package:bloc_with_mvvm/feature/auth/presentation/pages/sign_up_page.dart';
 import 'package:bloc_with_mvvm/feature/auth/presentation/pages/splash_page.dart';
-import 'package:bloc_with_mvvm/feature/home/presentation/pages/cart_screen.dart';
 import 'package:bloc_with_mvvm/feature/home/presentation/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,7 +16,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:fake_async/fake_async.dart';
 
 class MockAuthBloc extends MockBloc<AuthEvent, AuthState> implements AuthBloc {}
 
