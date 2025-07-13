@@ -85,7 +85,7 @@ class _SplashPageState extends State<SplashPage> {
             GoRouter.of(context).go(lastRoute);
             NavigationHistory.clear();
           } else {
-            GoRouter.of(context).go('/home');
+            GoRouter.of(context).go('/main_screen');
           }
         } else if (state is AuthFailure) {
           GoRouter.of(context).go('/login');

@@ -1,10 +1,11 @@
 import 'package:bloc_with_mvvm/feature/auth/presentation/pages/sign_up_page.dart';
+import 'package:bloc_with_mvvm/feature/main_screen/presentation/pages/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../feature/auth/presentation/pages/login_page.dart';
 import '../../feature/auth/presentation/pages/splash_page.dart';
-import '../../feature/home/presentation/pages/home_page.dart';
+import '../../feature/nav_screen/home/presentation/pages/home_screen.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -39,7 +40,13 @@ GoRouter buildRouter({String initialLocation = '/splash'}) {
         path: '/home',
         name: 'home',
         pageBuilder: (context, state) =>
-            MaterialPage(key: state.pageKey, child: const HomePage()),
+            MaterialPage(key: state.pageKey, child: const HomeScreen()),
+      ),
+      GoRoute(
+        path: '/main_screen',
+        name: 'main_screen',
+        pageBuilder: (context, state) =>
+            MaterialPage(key: state.pageKey, child: const MainScreen()),
       ),
     ],
     redirect: (context, state) {

@@ -8,7 +8,7 @@ class AppLocalizations {
   AppLocalizations(this.locale);
 
   static const LocalizationsDelegate<AppLocalizations> delegate =
-  _AppLocalizationsDelegate();
+      _AppLocalizationsDelegate();
 
   static AppLocalizations of(BuildContext context) =>
       Localizations.of<AppLocalizations>(context, AppLocalizations)!;
@@ -22,7 +22,7 @@ class AppLocalizations {
     Map<String, dynamic> jsonMap = json.decode(jsonString);
 
     _localizedStrings = jsonMap.map(
-          (key, value) => MapEntry(key, value.toString()),
+      (key, value) => MapEntry(key, value.toString()),
     );
     return true;
   }

@@ -9,7 +9,7 @@ import 'package:bloc_with_mvvm/feature/auth/presentation/bloc/auth_event.dart';
 import 'package:bloc_with_mvvm/feature/auth/presentation/bloc/auth_state.dart';
 import 'package:bloc_with_mvvm/feature/auth/presentation/pages/login_page.dart';
 import 'package:bloc_with_mvvm/feature/auth/presentation/pages/splash_page.dart';
-import 'package:bloc_with_mvvm/feature/home/presentation/pages/home_page.dart';
+import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/pages/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -146,7 +146,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 500));
 
     // ✅ Should now land on HomePage
-    expect(find.byType(HomePage), findsOneWidget);
+    expect(find.byType(HomeScreen), findsOneWidget);
   });
 
   testWidgets('renders 404 page on unknown route', (tester) async {

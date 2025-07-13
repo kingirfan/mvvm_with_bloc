@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
               GoRouter.of(context).go(lastRoute);
               NavigationHistory.clear();
             } else {
-              GoRouter.of(context).go('/home');
+              GoRouter.of(context).go('/main_screen');
             }
           } else if (state is AuthFailure) {
             Navigator.of(context).pop();
