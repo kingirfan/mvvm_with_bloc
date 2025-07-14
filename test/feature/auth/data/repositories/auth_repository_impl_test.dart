@@ -129,10 +129,12 @@ void main() {
       data: {},
     );
 
-    when(() => mockDio.post(
-      Environment.validateToken,
-      options: any(named: 'options'),
-    )).thenAnswer((_) async => response);
+    when(
+      () => mockDio.post(
+        Environment.validateToken,
+        options: any(named: 'options'),
+      ),
+    ).thenAnswer((_) async => response);
 
     final result = await authRepositoryImpl.validateToken(token);
 
@@ -141,10 +143,12 @@ void main() {
 
   test('returns false when Dio throws unexpected exception', () async {
     // Arrange
-    when(() => mockDio.post(
-      Environment.validateToken,
-      options: any(named: 'options'),
-    )).thenThrow(Exception('network error')); // generic error
+    when(
+      () => mockDio.post(
+        Environment.validateToken,
+        options: any(named: 'options'),
+      ),
+    ).thenThrow(Exception('network error')); // generic error
 
     // Act
     final result = await authRepositoryImpl.validateToken('dummy_token');
@@ -157,13 +161,17 @@ void main() {
     const token = 'valid_token';
 
     // Arrange
-    when(() => mockDio.post(
-      Environment.validateToken,
-      options: any(named: 'options'),
-    )).thenThrow(DioException(
-      requestOptions: RequestOptions(path: Environment.validateToken),
-      type: DioExceptionType.badResponse,
-    ));
+    when(
+      () => mockDio.post(
+        Environment.validateToken,
+        options: any(named: 'options'),
+      ),
+    ).thenThrow(
+      DioException(
+        requestOptions: RequestOptions(path: Environment.validateToken),
+        type: DioExceptionType.badResponse,
+      ),
+    );
 
     // Act
     final result = await authRepositoryImpl.validateToken(token);
