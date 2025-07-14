@@ -10,10 +10,10 @@ import 'home_event.dart';
 
 part 'home_state.dart';
 
-class HomeBloc extends Bloc<HomeEvent, HomePageState> {
+class HomePageBloc extends Bloc<HomeEvent, HomePageState> {
   final CategoryUseCase categoryUseCase;
 
-  HomeBloc({required this.categoryUseCase}) : super(HomePageInitial()) {
+  HomePageBloc({required this.categoryUseCase}) : super(HomePageInitial()) {
     on<LoadCategoriesEvent>(_onLoadCategoriesEvent);
   }
 
@@ -24,7 +24,8 @@ class HomeBloc extends Bloc<HomeEvent, HomePageState> {
     emit(HomePageLoading());
 
     try {
-      await categoryUseCase();
+      final categoryList = await categoryUseCase();
+      emit(HomePageCategoryLoaded(categoryList));
     } on DioException catch (e) {
       if (e.type == DioExceptionType.cancel &&
           e.error is UnauthorizedException) {

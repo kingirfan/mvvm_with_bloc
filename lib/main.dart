@@ -1,4 +1,5 @@
 import 'package:bloc_with_mvvm/core/di/locator.dart';
+import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +12,10 @@ void main() async {
 
   runApp(
     MultiBlocProvider(
-      providers: [BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>())],
+      providers: [
+        BlocProvider<AuthBloc>(create: (_) => sl<AuthBloc>()),
+        BlocProvider<HomePageBloc>(create: (_) => sl<HomePageBloc>()),
+      ],
       child: const MyApp(),
     ),
   );

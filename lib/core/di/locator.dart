@@ -10,6 +10,10 @@ import '../../feature/auth/domain/usecase/login_usecase.dart';
 import '../../feature/auth/domain/usecase/validate_token_usecase.dart';
 import '../../feature/auth/presentation/bloc/auth_bloc.dart';
 
+import '../../feature/nav_screen/home/data/repositories/home_repository_impl.dart';
+import '../../feature/nav_screen/home/domain/repository/home_repository.dart';
+import '../../feature/nav_screen/home/domain/usecase/category_usecase.dart';
+import '../../feature/nav_screen/home/presentation/bloc/home_bloc.dart';
 import '../network/interceptor/auth_interceptor.dart';
 import '../utils/helpers/navigation_service.dart';
 import '../utils/helpers/token_validator.dart';
@@ -19,6 +23,7 @@ final sl = GetIt.instance;
 Future<void> setUpLocator() async {
   sl.registerLazySingleton<NavigationService>(() => NavigationServiceImpl());
   sl.registerLazySingleton<TokenStorage>(() => TokenStorageImpl());
+  sl.registerLazySingleton<HomeRepository>(() => HomeRepositoryImpl(sl<Dio>()));
 
 
   // Dio for TokenValidator only (no AuthInterceptor)
@@ -67,6 +72,8 @@ Future<void> setUpLocator() async {
   sl.registerLazySingleton(() => ValidateTokenUseCase(sl()));
   sl.registerLazySingleton(() => LoginUseCase(sl()));
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
+  sl.registerLazySingleton(() => CategoryUseCase(sl<HomeRepository>()));
+
 
   // BLoCs
   sl.registerFactory(
@@ -76,4 +83,7 @@ Future<void> setUpLocator() async {
       signUpUseCase: sl(),
     ),
   );
+
+  sl.registerFactory(() => HomePageBloc(categoryUseCase: sl()));
+
 }

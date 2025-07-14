@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../common/custom_shimmer.dart';
 import '../../../../../common/widgets/appname_widget.dart';
 import '../../../../../core/theme/custom_colors.dart';
+import '../bloc/home_bloc.dart';
+import '../view_models/HomePageViewModel.dart';
 import '../widgets/category_tile.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final viewModel = HomePageViewModel();
+
+  @override
+  void initState() {
+    super.initState();
+    viewModel.loadCategories(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,40 +111,46 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
 
-            Container(
-              padding: const EdgeInsets.only(left: 25),
-              height: 40,
-              child: fruitsList.isNotEmpty
-                  ? ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (_, index) {
-                        return CategoryTile(
-                          onPressed: () {
-                            // controller.selectCategory(
-                            //     controller.allCategories[index]);
+            BlocBuilder<HomePageBloc, HomePageState>(
+              builder: (context, state) {
+                viewModel.handleState(state);
+                return Container(
+                  padding: const EdgeInsets.only(left: 25),
+                  height: 40,
+                  child: !viewModel.isLoading && viewModel.categories.isNotEmpty
+                      ? ListView.separated(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (_, index) {
+                            return CategoryTile(
+                              onPressed: () {
+                                // controller.selectCategory(
+                                //     controller.allCategories[index]);
+                              },
+                              category: viewModel.categories[index].title,
+                              isSelected: true,
+                            );
                           },
-                          category: fruitsList[index],
-                          isSelected: true,
-                        );
-                      },
-                      separatorBuilder: (_, index) => const SizedBox(width: 10),
-                      itemCount: fruitsList.length,
-                    )
-                  : ListView(
-                      scrollDirection: Axis.horizontal,
-                      children: List.generate(
-                        10,
-                        (index) => Container(
-                          alignment: Alignment.center,
-                          margin: const EdgeInsets.only(right: 12),
-                          child: CustomShimmer(
-                            height: 20,
-                            width: 80,
-                            borderRadius: BorderRadius.circular(20),
+                          separatorBuilder: (_, index) =>
+                              const SizedBox(width: 10),
+                          itemCount: viewModel.categories.length,
+                        )
+                      : ListView(
+                          scrollDirection: Axis.horizontal,
+                          children: List.generate(
+                            10,
+                            (index) => Container(
+                              alignment: Alignment.center,
+                              margin: const EdgeInsets.only(right: 12),
+                              child: CustomShimmer(
+                                height: 20,
+                                width: 80,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
+                );
+              },
             ),
           ],
         ),
