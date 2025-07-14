@@ -15,6 +15,8 @@ class HomePageBloc extends Bloc<HomeEvent, HomePageState> {
 
   HomePageBloc({required this.categoryUseCase}) : super(HomePageInitial()) {
     on<LoadCategoriesEvent>(_onLoadCategoriesEvent);
+    on<SelectedCategoryEvent>(_onSelectCategory);
+
   }
 
   Future<void> _onLoadCategoriesEvent(
@@ -25,7 +27,7 @@ class HomePageBloc extends Bloc<HomeEvent, HomePageState> {
 
     try {
       final categoryList = await categoryUseCase();
-      emit(HomePageCategoryLoaded(categoryList));
+      emit(HomePageCategoryLoaded(categoryList, categoryList.isNotEmpty ? categoryList.first : null,));
     } on DioException catch (e) {
       if (e.type == DioExceptionType.cancel &&
           e.error is UnauthorizedException) {
@@ -35,6 +37,17 @@ class HomePageBloc extends Bloc<HomeEvent, HomePageState> {
       emit(HomePageFailure(mapDioError(e)));
     } catch (e) {
       emit(const HomePageFailure(UnknownException()));
+    }
+  }
+
+  void _onSelectCategory(
+    SelectedCategoryEvent event,
+    Emitter<HomePageState> emit,
+  ) {
+    if (state is HomePageCategoryLoaded) {
+      final currentState = state as HomePageCategoryLoaded;
+
+      emit(HomePageCategoryLoaded(currentState.categories, event.category));
     }
   }
 }

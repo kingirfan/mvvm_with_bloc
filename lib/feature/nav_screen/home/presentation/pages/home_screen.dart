@@ -1,3 +1,4 @@
+import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/bloc/home_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../common/custom_shimmer.dart';
@@ -26,15 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
-
-    List<String> fruitsList = [
-      'apple',
-      'ornge',
-      'pine_apple',
-      'grapes',
-      'banana',
-      'strawberry',
-    ];
 
     return SafeArea(
       child: Scaffold(
@@ -113,43 +105,55 @@ class _HomeScreenState extends State<HomeScreen> {
 
             BlocBuilder<HomePageBloc, HomePageState>(
               builder: (context, state) {
-                viewModel.handleState(state);
-                return Container(
-                  padding: const EdgeInsets.only(left: 25),
-                  height: 40,
-                  child: !viewModel.isLoading && viewModel.categories.isNotEmpty
-                      ? ListView.separated(
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (_, index) {
-                            return CategoryTile(
-                              onPressed: () {
-                                // controller.selectCategory(
-                                //     controller.allCategories[index]);
-                              },
-                              category: viewModel.categories[index].title,
-                              isSelected: true,
-                            );
-                          },
-                          separatorBuilder: (_, index) =>
-                              const SizedBox(width: 10),
-                          itemCount: viewModel.categories.length,
-                        )
-                      : ListView(
-                          scrollDirection: Axis.horizontal,
-                          children: List.generate(
-                            10,
-                            (index) => Container(
-                              alignment: Alignment.center,
-                              margin: const EdgeInsets.only(right: 12),
-                              child: CustomShimmer(
-                                height: 20,
-                                width: 80,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
+                if (state is HomePageLoading) {
+                  return SizedBox(
+                    height: 40,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: List.generate(
+                        10,
+                        (index) => Container(
+                          alignment: Alignment.center,
+                          margin: const EdgeInsets.only(right: 12),
+                          child: CustomShimmer(
+                            height: 20,
+                            width: 80,
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                );
+                      ),
+                    ),
+                  );
+                }
+
+                if (state is HomePageCategoryLoaded) {
+                  return Container(
+                    padding: const EdgeInsets.only(left: 25),
+                    height: 40,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (_, index) {
+                        final category = state.categories[index];
+                        return CategoryTile(
+                          onPressed: () {
+                            context.read<HomePageBloc>().add(
+                              SelectedCategoryEvent(category),
+                            );
+                          },
+                          category: category.title,
+                          isSelected: category.id == state.selectedCategory?.id,
+                        );
+                      },
+                      separatorBuilder: (_, index) => const SizedBox(width: 10),
+                      itemCount: state.categories.length,
+                    ),
+                  );
+                }
+                if (state is HomePageFailure) {
+                  return Text(state.error.message);
+                }
+
+                return const SizedBox(); // For initial or unknown state
               },
             ),
           ],

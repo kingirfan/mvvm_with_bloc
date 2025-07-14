@@ -13,9 +13,15 @@ class HomePageLoading extends HomePageState {}
 
 class HomePageCategoryLoaded extends HomePageState {
   final List<CategoryModel> categories;
+  final CategoryModel? selectedCategory;
 
-  const HomePageCategoryLoaded(this.categories);
+  const HomePageCategoryLoaded(this.categories, this.selectedCategory);
+
+  @override
+  List<Object?> get props => [categories, selectedCategory];
 }
+
+
 
 class HomePageFailure extends HomePageState {
   final AppException error;
