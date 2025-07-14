@@ -90,12 +90,10 @@ void main() {
 */
 
 
-import 'package:bloc_test/bloc_test.dart';
 import 'package:bloc_with_mvvm/feature/main_screen/presentation/bloc/bottom_bloc.dart';
 import 'package:bloc_with_mvvm/feature/main_screen/presentation/pages/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockBottomNavBloc extends Mock implements BottomNavBloc {}

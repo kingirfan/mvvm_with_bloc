@@ -20,10 +20,11 @@ Future<void> setUpLocator() async {
   sl.registerLazySingleton<NavigationService>(() => NavigationServiceImpl());
   sl.registerLazySingleton<TokenStorage>(() => TokenStorageImpl());
 
+
   // Dio for TokenValidator only (no AuthInterceptor)
   sl.registerLazySingleton<Dio>(
     instanceName: 'tokenValidatorDio',
-        () => Dio(
+    () => Dio(
       BaseOptions(
         baseUrl: Environment.baseUrl,
         headers: Environment.defaultHeaders,
@@ -33,12 +34,12 @@ Future<void> setUpLocator() async {
 
   // Token Validator
   sl.registerLazySingleton<TokenValidator>(
-        () => TokenValidatorImpl(sl<Dio>(instanceName: 'tokenValidatorDio')),
+    () => TokenValidatorImpl(sl<Dio>(instanceName: 'tokenValidatorDio')),
   );
 
   // AuthInterceptor (depends on TokenValidator)
   sl.registerLazySingleton<AuthInterceptor>(
-        () => AuthInterceptor(
+    () => AuthInterceptor(
       sl<TokenStorage>(),
       sl<NavigationService>(),
       sl<TokenValidator>(),
@@ -59,7 +60,7 @@ Future<void> setUpLocator() async {
 
   // Repositories
   sl.registerLazySingleton<AuthRepository>(
-        () => AuthRepositoryImpl(sl(), sl()),
+    () => AuthRepositoryImpl(sl(), sl()),
   );
 
   // UseCases
@@ -68,10 +69,11 @@ Future<void> setUpLocator() async {
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
 
   // BLoCs
-  sl.registerFactory(() => AuthBloc(
-    validateTokenUseCase: sl(),
-    loginUseCase: sl(),
-    signUpUseCase: sl(),
-  ));
+  sl.registerFactory(
+    () => AuthBloc(
+      validateTokenUseCase: sl(),
+      loginUseCase: sl(),
+      signUpUseCase: sl(),
+    ),
+  );
 }
-

@@ -36,8 +36,8 @@ void main() {
       initialLocation: '/register',
       routes: [
         GoRoute(
-          path: '/home',
-          builder: (context, state) => const Scaffold(body: Text('Home Page')),
+          path: '/main_screen',
+          builder: (context, state) => const Scaffold(body: Text('Main Screen')),
         ),
 
         GoRoute(
@@ -132,7 +132,7 @@ void main() {
     ).called(1);
   });
 
-  testWidgets('navigates to /home on AuthSuccess with no last route', (
+  testWidgets('navigates to /main_screen on AuthSuccess with no last route', (
     WidgetTester tester,
   ) async {
     whenListen(
@@ -145,7 +145,7 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    expect(find.text('Home Page'), findsOneWidget);
+    expect(find.text('Main Screen'), findsOneWidget);
   });
 
   testWidgets('taps back button and pops the route', (tester) async {
