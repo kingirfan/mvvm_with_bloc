@@ -82,14 +82,16 @@ void main() {
     blocTest<AuthBloc, AuthState>(
       'emits [AuthLoading, AuthFailure(UnknownException)] when unknown exception occurs',
       build: () {
-        when(() => mockValidateUseCase(any())).thenThrow(Exception('Unexpected'));
+        when(
+          () => mockValidateUseCase(any()),
+        ).thenThrow(Exception('Unexpected'));
         return authBloc;
       },
       act: (bloc) => bloc.add(const ValidateTokenRequested('any_token')),
       expect: () => [
         AuthLoading(),
         isA<AuthFailure>().having(
-              (s) => s.error,
+          (s) => s.error,
           'error',
           isA<UnknownException>(),
         ),
@@ -250,8 +252,6 @@ void main() {
     ],
   );
 
-
-
   blocTest<AuthBloc, AuthState>(
     'emits [AuthLoading, AuthFailure(UnknownException)] when generic exception occurs during signup',
     build: () {
@@ -300,4 +300,5 @@ void main() {
     ),
     expect: () => [AuthLoading()],
   );
+
 }
