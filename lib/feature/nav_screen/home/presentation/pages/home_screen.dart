@@ -16,12 +16,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final viewModel = HomePageViewModel();
-
   @override
   void initState() {
     super.initState();
-    viewModel.loadCategories(context);
+    context.read<HomePageBloc>().add(LoadCategoriesEvent());
   }
 
   @override

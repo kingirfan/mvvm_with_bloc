@@ -21,8 +21,6 @@ class HomePageCategoryLoaded extends HomePageState {
   List<Object?> get props => [categories, selectedCategory];
 }
 
-
-
 class HomePageFailure extends HomePageState {
   final AppException error;
 
