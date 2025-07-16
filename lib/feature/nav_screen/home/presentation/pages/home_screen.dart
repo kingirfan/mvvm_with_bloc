@@ -16,10 +16,13 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  HomePageViewModel homePageViewModel = HomePageViewModel();
+
   @override
   void initState() {
     super.initState();
-    context.read<HomePageBloc>().add(LoadCategoriesEvent());
+    // context.read<HomePageBloc>().add(LoadCategoriesEvent());
+    homePageViewModel.loadCategories(context);
   }
 
   @override
@@ -103,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             BlocBuilder<HomePageBloc, HomePageState>(
               builder: (context, state) {
+                homePageViewModel.handleState(context, state);
                 if (state is HomePageLoading) {
                   return SizedBox(
                     height: 40,
@@ -134,8 +138,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         final category = state.categories[index];
                         return CategoryTile(
                           onPressed: () {
-                            context.read<HomePageBloc>().add(
-                              SelectedCategoryEvent(category),
+                            homePageViewModel.onCategorySelected(
+                              context,
+                              category,
                             );
                           },
                           category: category.title,
@@ -152,6 +157,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
 
                 return const SizedBox(); // For initial or unknown state
+              },
+            ),
+
+            const SizedBox(height: 30),
+
+            BlocBuilder<HomePageBloc, HomePageState>(
+              builder: (context, state) {
+                if (state is HomePageLoading) {
+                  return const SizedBox(height: 40, child: Text('Loadin ....'));
+                }
+
+                if (state is HomePageProductLoaded) {
+                  print('state ${state.productList}');
+                  return Container(
+                    padding: const EdgeInsets.only(left: 25),
+                    height: 40,
+                    child: Text('data ${state.productList.length}'),
+                  );
+                }
+                if (state is HomePageFailure) {
+                  return Text(state.error.message);
+                }
+
+                return const SizedBox();
               },
             ),
           ],

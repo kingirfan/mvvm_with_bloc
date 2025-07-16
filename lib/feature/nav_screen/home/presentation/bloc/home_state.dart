@@ -21,6 +21,15 @@ class HomePageCategoryLoaded extends HomePageState {
   List<Object?> get props => [categories, selectedCategory];
 }
 
+class HomePageProductLoaded extends HomePageState {
+  final List<ProductModel> productList;
+
+  const HomePageProductLoaded(this.productList);
+
+  @override
+  List<Object?> get props => [productList];
+}
+
 class HomePageFailure extends HomePageState {
   final AppException error;
 

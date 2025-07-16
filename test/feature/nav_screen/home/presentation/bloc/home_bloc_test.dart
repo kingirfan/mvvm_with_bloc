@@ -14,8 +14,8 @@ void main() {
   late MockCategoryUseCase mockCategoryUseCase;
   late HomePageBloc homePageBloc;
 
-  final category1 = CategoryModel(id: 'aGN3NQKlXp', title: 'Cereais');
-  final category2 = CategoryModel(id: 'aGN3NQKlXy', title: 'Vegetables');
+  const category1 = CategoryModel(id: 'aGN3NQKlXp', title: 'Cereais');
+  const category2 = CategoryModel(id: 'aGN3NQKlXy', title: 'Vegetables');
 
   final categoryList = [category1, category2];
 
