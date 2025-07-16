@@ -21,6 +21,8 @@ class HomePageCategoryLoaded extends HomePageState {
   List<Object?> get props => [categories, selectedCategory];
 }
 
+class HomePageProductLoading extends HomePageState {}
+
 class HomePageProductLoaded extends HomePageState {
   final List<ProductModel> productList;
 

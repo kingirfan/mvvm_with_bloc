@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/foundation.dart';
 
 import 'category_model.dart';
 
@@ -7,7 +6,7 @@ class ProductModel extends Equatable {
   String? id;
   String? title;
   String? description;
-  int? price;
+  double? price;
   String? unit;
   String? picture;
   CategoryModel? category;
@@ -26,7 +25,7 @@ class ProductModel extends Equatable {
     id = json['id'];
     title = json['title'];
     description = json['description'];
-    price = json['price'];
+    price = (json['price'] != null) ? (json['price'] as num).toDouble() : null;
     unit = json['unit'];
     picture = json['picture'];
     category = json['category'] != null

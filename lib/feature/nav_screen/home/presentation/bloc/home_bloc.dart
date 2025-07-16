@@ -58,6 +58,10 @@ class HomePageBloc extends Bloc<HomeEvent, HomePageState> {
       // If already selected, do nothing
       if (currentState.selectedCategory?.id == event.category.id) return;
       emit(HomePageCategoryLoaded(currentState.categories, event.category));
+
+      if (event.loadProducts) {
+        add(LoadProductEvent(categoryId: event.category.id));
+      }
     }
   }
 
@@ -65,7 +69,7 @@ class HomePageBloc extends Bloc<HomeEvent, HomePageState> {
     LoadProductEvent event,
     Emitter<HomePageState> emit,
   ) async {
-    emit(HomePageLoading());
+    emit(HomePageProductLoading());
 
     try {
       final productList = await productUseCase(categoryId: event.categoryId);
@@ -77,7 +81,7 @@ class HomePageBloc extends Bloc<HomeEvent, HomePageState> {
       }
 
       emit(HomePageFailure(mapDioError(e)));
-    } catch (e) {
+    } catch (e,stackTrace) {
       emit(const HomePageFailure(UnknownException()));
     }
   }

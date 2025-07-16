@@ -19,18 +19,15 @@ class MainScreen extends StatelessWidget {
       child: Scaffold(
         body: BlocBuilder<BottomNavBloc, int>(
           builder: (context, selectedIndex) {
-            switch (selectedIndex) {
-              case 0:
-                return const HomeScreen();
-              case 1:
-                return const CategoryScreen();
-              case 2:
-                return const FavoriteScreen();
-              case 3:
-                return const SettingsScreen();
-              default:
-                return Container();
-            }
+            return IndexedStack(
+              index: selectedIndex,
+              children: const [
+                HomeScreen(),
+                CategoryScreen(),
+                FavoriteScreen(),
+                SettingsScreen(),
+              ],
+            );
           },
         ),
         bottomNavigationBar: BlocBuilder<BottomNavBloc, int>(

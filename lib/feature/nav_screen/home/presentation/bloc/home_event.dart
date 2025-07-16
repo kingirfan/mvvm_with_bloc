@@ -12,8 +12,9 @@ class LoadCategoriesEvent extends HomeEvent {}
 
 class SelectedCategoryEvent extends HomeEvent {
   final CategoryModel category;
+  final bool loadProducts;
 
-  SelectedCategoryEvent(this.category);
+  SelectedCategoryEvent(this.category, { this.loadProducts = true});
 
   @override
   // TODO: implement props

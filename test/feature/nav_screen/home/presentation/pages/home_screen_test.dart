@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:bloc_with_mvvm/core/utils/exceptions/app_exception.dart';
 import 'package:bloc_with_mvvm/feature/models/category_model.dart';
+import 'package:bloc_with_mvvm/feature/models/product_model.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/bloc/home_bloc.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/bloc/home_event.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/pages/home_screen.dart';
@@ -90,9 +91,9 @@ void main() {
     tester,
   ) async {
     // Arrange
-    final category1 = CategoryModel(id: '1', title: 'Fruits');
-    final category2 = CategoryModel(id: '2', title: 'Vegetables');
-    final state = HomePageCategoryLoaded([category1, category2], category1);
+    const category1 = CategoryModel(id: '1', title: 'Fruits');
+    const category2 = CategoryModel(id: '2', title: 'Vegetables');
+    const state = HomePageCategoryLoaded([category1, category2], category1);
 
     when(() => mockHomePageBloc.state).thenReturn(state);
     whenListen(mockHomePageBloc, Stream.fromIterable([state]));
@@ -109,5 +110,31 @@ void main() {
     verify(
       () => mockHomePageBloc.add(SelectedCategoryEvent(category2)),
     ).called(1);
+  });
+
+  testWidgets('should show Item tiles when state is loaded', (tester) async {
+    const productJson = {
+      "id": "101",
+      "title": "Corn Flakes",
+      "description": "Delicious breakfast cereal",
+      "price": 3.99,
+      "imageUrl": "https://example.com/cornflakes.jpg",
+      "categoryId": "1", // Matches the CategoryModel's ID
+    };
+
+    // Convert JSON to ProductModel
+    final product = ProductModel.fromJson(productJson);
+
+    final productList = [product];
+
+    when(
+      () => mockHomePageBloc.state,
+    ).thenReturn(HomePageProductLoaded(productList));
+
+    await tester.pumpWidget(createWidgetUnderTest());
+    await tester.pump();
+    for (var product in productList) {
+      expect(find.text(product.title ?? 'No tile found'), findsOneWidget);
+    }
   });
 }

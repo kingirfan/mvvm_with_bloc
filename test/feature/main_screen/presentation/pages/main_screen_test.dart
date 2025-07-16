@@ -89,29 +89,48 @@ void main() {
 }
 */
 
-
 import 'package:bloc_with_mvvm/feature/main_screen/presentation/bloc/bottom_bloc.dart';
 import 'package:bloc_with_mvvm/feature/main_screen/presentation/pages/main_screen.dart';
+import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/bloc/home_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 
+import '../../../nav_screen/home/presentation/pages/home_screen_test.dart';
+
 class MockBottomNavBloc extends Mock implements BottomNavBloc {}
+
+class MockHomePageBloc extends Mock implements HomePageBloc {}
+
 
 void main() {
   late MockBottomNavBloc bottomNavBloc;
+  late HomePageBloc homePageBloc;
 
   setUp(() {
     bottomNavBloc = MockBottomNavBloc();
+    homePageBloc = MockHomePageBloc();
 
     when(() => bottomNavBloc.close()).thenAnswer((_) async {});
+    when(() => homePageBloc.close()).thenAnswer((_) async {});
 
-    // Register enum fallbacks for mocktail
+    when(() => bottomNavBloc.state).thenReturn(0);
+    when(() => bottomNavBloc.stream)
+        .thenAnswer((_) => Stream<int>.fromIterable([0]));
+
+    when(() => homePageBloc.state).thenReturn(HomePageInitial());
+    when(() => homePageBloc.stream).thenAnswer(
+          (_) => Stream<HomePageState>.fromIterable([HomePageInitial()]),
+    );
+
+    // Register fallback values if needed
     registerFallbackValue(BottomNavEvent.home);
     registerFallbackValue(BottomNavEvent.category);
     registerFallbackValue(BottomNavEvent.favorite);
     registerFallbackValue(BottomNavEvent.settings);
   });
+
 
   tearDown(() async {
     when(() => bottomNavBloc.close()).thenAnswer((_) async {});
@@ -119,15 +138,22 @@ void main() {
   });
 
   Widget createWidgetUnderTest() {
-    return MaterialApp(
-      home: MainScreen(bloc: bottomNavBloc),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<BottomNavBloc>.value(value: bottomNavBloc),
+        BlocProvider<HomePageBloc>.value(value: homePageBloc),
+      ],
+      child: MaterialApp(home: MainScreen(bloc: bottomNavBloc)),
     );
   }
 
+
+
   void stubBlocState(int index) {
     when(() => bottomNavBloc.state).thenReturn(index);
-    when(() => bottomNavBloc.stream)
-        .thenAnswer((_) => Stream<int>.fromIterable([index]));
+    when(
+      () => bottomNavBloc.stream,
+    ).thenAnswer((_) => Stream<int>.fromIterable([index]));
   }
 
   testWidgets('shows HomeScreen when selectedIndex is 0', (tester) async {
@@ -135,7 +161,10 @@ void main() {
 
     await tester.pumpWidget(createWidgetUnderTest());
 
-    expect(find.text('Home'), findsOneWidget); // adjust to match HomeScreen content
+    expect(
+      find.byKey(const Key('home_screen')),
+      findsOneWidget,
+    ); // adjust to match HomeScreen content
   });
 
   testWidgets('shows CategoryScreen when selectedIndex is 1', (tester) async {
@@ -143,7 +172,10 @@ void main() {
 
     await tester.pumpWidget(createWidgetUnderTest());
 
-    expect(find.text('Category'), findsOneWidget); // adjust to match CategoryScreen content
+    expect(
+      find.text('Category'),
+      findsOneWidget,
+    ); // adjust to match CategoryScreen content
   });
 
   testWidgets('shows FavoriteScreen when selectedIndex is 2', (tester) async {
@@ -151,7 +183,10 @@ void main() {
 
     await tester.pumpWidget(createWidgetUnderTest());
 
-    expect(find.text('Favorite'), findsOneWidget); // adjust to match FavoriteScreen content
+    expect(
+      find.text('Favorite'),
+      findsOneWidget,
+    ); // adjust to match FavoriteScreen content
   });
 
   testWidgets('shows SettingsScreen when selectedIndex is 3', (tester) async {
@@ -159,20 +194,26 @@ void main() {
 
     await tester.pumpWidget(createWidgetUnderTest());
 
-    expect(find.text('Settings'), findsOneWidget); // adjust to match SettingsScreen content
+    expect(
+      find.text('Settings'),
+      findsOneWidget,
+    ); // adjust to match SettingsScreen content
   });
 
-  testWidgets('dispatches BottomNavEvent.category when Category tab is tapped', (tester) async {
-    stubBlocState(0);
-    when(() => bottomNavBloc.add(any())).thenReturn(null);
+  testWidgets(
+    'dispatches BottomNavEvent.category when Category tab is tapped',
+    (tester) async {
+      stubBlocState(1);
+      when(() => bottomNavBloc.add(any())).thenReturn(null);
 
-    await tester.pumpWidget(createWidgetUnderTest());
+      await tester.pumpWidget(createWidgetUnderTest());
 
-    await tester.tap(find.text('Category')); // Tap label
-    await tester.pump();
+      await tester.tap(find.text('Category')); // Tap label
+      await tester.pump();
 
-    verify(() => bottomNavBloc.add(BottomNavEvent.category)).called(1);
-  });
+      verify(() => bottomNavBloc.add(BottomNavEvent.category)).called(1);
+    },
+  );
 
   testWidgets('shows all BottomNavigationBar labels', (tester) async {
     stubBlocState(0);

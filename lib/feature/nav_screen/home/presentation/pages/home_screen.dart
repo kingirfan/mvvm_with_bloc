@@ -7,9 +7,11 @@ import '../../../../../core/theme/custom_colors.dart';
 import '../bloc/home_bloc.dart';
 import '../view_models/HomePageViewModel.dart';
 import '../widgets/category_tile.dart';
+import '../widgets/item_tile.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  // const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key ?? const Key('home_screen'));
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -21,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    // context.read<HomePageBloc>().add(LoadCategoriesEvent());
     homePageViewModel.loadCategories(context);
   }
 
@@ -107,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BlocBuilder<HomePageBloc, HomePageState>(
               builder: (context, state) {
                 homePageViewModel.handleState(context, state);
-                if (state is HomePageLoading) {
+                if (homePageViewModel.isCategoryLoading) {
                   return SizedBox(
                     height: 40,
                     child: ListView(
@@ -128,14 +129,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
 
-                if (state is HomePageCategoryLoaded) {
+                if (homePageViewModel.categories.isNotEmpty) {
                   return Container(
                     padding: const EdgeInsets.only(left: 25),
                     height: 40,
                     child: ListView.separated(
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (_, index) {
-                        final category = state.categories[index];
+                        final category = homePageViewModel.categories[index];
                         return CategoryTile(
                           onPressed: () {
                             homePageViewModel.onCategorySelected(
@@ -144,16 +145,18 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                           category: category.title,
-                          isSelected: category.id == state.selectedCategory?.id,
+                          isSelected:
+                              category.id ==
+                              homePageViewModel.selectedCategory?.id,
                         );
                       },
                       separatorBuilder: (_, index) => const SizedBox(width: 10),
-                      itemCount: state.categories.length,
+                      itemCount: homePageViewModel.categories.length,
                     ),
                   );
                 }
-                if (state is HomePageFailure) {
-                  return Text(state.error.message);
+                if (homePageViewModel.categoryError != null) {
+                  return Text(homePageViewModel.categoryError!);
                 }
 
                 return const SizedBox(); // For initial or unknown state
@@ -164,20 +167,34 @@ class _HomeScreenState extends State<HomeScreen> {
 
             BlocBuilder<HomePageBloc, HomePageState>(
               builder: (context, state) {
-                if (state is HomePageLoading) {
+                if (homePageViewModel.isProductLoading) {
                   return const SizedBox(height: 40, child: Text('Loadin ....'));
                 }
 
-                if (state is HomePageProductLoaded) {
-                  print('state ${state.productList}');
-                  return Container(
-                    padding: const EdgeInsets.only(left: 25),
-                    height: 40,
-                    child: Text('data ${state.productList.length}'),
+                if (homePageViewModel.productList.isNotEmpty) {
+                  return Expanded(
+                    child: GridView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                      physics: const BouncingScrollPhysics(),
+                      gridDelegate:
+                      const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 10,
+                        childAspectRatio: 9 / 11.5,
+                      ),
+                      itemCount: homePageViewModel.productList.length,
+                      itemBuilder: (_, index) {
+                        return ItemTile(
+                            item: homePageViewModel.productList[index],
+
+                        );
+                      },
+                    ),
                   );
                 }
-                if (state is HomePageFailure) {
-                  return Text(state.error.message);
+                if (homePageViewModel.productError != null) {
+                  return Text(homePageViewModel.productError!);
                 }
 
                 return const SizedBox();
