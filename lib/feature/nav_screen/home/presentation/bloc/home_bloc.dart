@@ -21,6 +21,7 @@ class HomePageBloc extends Bloc<HomeEvent, HomePageState> {
     on<LoadCategoriesEvent>(_onLoadCategoriesEvent);
     on<SelectedCategoryEvent>(_onSelectCategory);
     on<LoadProductEvent>(_onLoadProductEvent);
+    on<SearchProductEvent>(_onSearchProduct);
   }
 
   Future<void> _onLoadCategoriesEvent(
@@ -81,8 +82,26 @@ class HomePageBloc extends Bloc<HomeEvent, HomePageState> {
       }
 
       emit(HomePageFailure(mapDioError(e)));
-    } catch (e,stackTrace) {
+    } catch (e) {
       emit(const HomePageFailure(UnknownException()));
+    }
+  }
+
+  void _onSearchProduct(SearchProductEvent event, Emitter<HomePageState> emit) {
+    if (state is HomePageProductLoaded) {
+      final currentState = state as HomePageProductLoaded;
+      final filtered = event.query.isEmpty
+          ? [...currentState.productList]
+          : currentState.productList.where((product) {
+              return product.title?.toLowerCase().contains(
+                    event.query.toLowerCase(),
+                  ) ??
+                  false;
+            }).toList();
+
+      emit(
+        HomePageProductLoaded(currentState.productList, event.query, filtered),
+      );
     }
   }
 }

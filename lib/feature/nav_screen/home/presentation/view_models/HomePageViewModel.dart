@@ -1,33 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../feature/models/category_model.dart';
 import '../../../../models/product_model.dart';
-import '../../domain/usecase/category_usecase.dart';
 import '../bloc/home_bloc.dart';
 import '../bloc/home_event.dart';
-
-/*class HomePageViewModel {
-  bool _hasAutoSelected = false;
-
-  void loadCategories(BuildContext context) {
-    context.read<HomePageBloc>().add(LoadCategoriesEvent());
-  }
-
-  void handleState(BuildContext context, HomePageState state) {
-    if (state is HomePageCategoryLoaded && !_hasAutoSelected) {
-      final firstCategory = state.categories.firstOrNull;
-      if (firstCategory != null) {
-        _hasAutoSelected = true;
-        context.read<HomePageBloc>().add(SelectedCategoryEvent(firstCategory));
-      }
-    }
-  }
-
-  void onCategorySelected(BuildContext context, CategoryModel category) {
-    context.read<HomePageBloc>().add(SelectedCategoryEvent(category));
-  }
-}*/
 
 class HomePageViewModel {
   bool _hasAutoSelected = false;
@@ -40,9 +19,25 @@ class HomePageViewModel {
   CategoryModel? selectedCategory;
   List<ProductModel> productList = [];
 
+  // 🔍 Search-related
+  String searchQuery = '';
+  List<ProductModel> filteredProductList = [];
+  Timer? _debounce;
+
+  List<ProductModel> get visibleProducts {
+    return searchQuery.isEmpty ? productList : filteredProductList;
+  }
+
   void loadCategories(BuildContext context) {
     isCategoryLoading = true;
     context.read<HomePageBloc>().add(LoadCategoriesEvent());
+  }
+
+  String get noProductMessage {
+    if (searchQuery.isNotEmpty) {
+      return 'No products match your search.';
+    }
+    return 'No products available.';
   }
 
   void handleState(BuildContext context, HomePageState state) {
@@ -73,7 +68,10 @@ class HomePageViewModel {
 
     if (state is HomePageProductLoaded) {
       isProductLoading = false;
+
       productList = state.productList;
+      filteredProductList = state.filteredList;
+      searchQuery = state.searchQuery;
     }
 
     if (state is HomePageFailure) {
@@ -93,5 +91,18 @@ class HomePageViewModel {
       SelectedCategoryEvent(category, loadProducts: true),
     );
     context.read<HomePageBloc>().add(LoadProductEvent(categoryId: category.id));
+  }
+
+  void onSearchChanged(BuildContext context, String query) {
+    searchQuery = query;
+
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 300), () {
+      context.read<HomePageBloc>().add(SearchProductEvent(query));
+    });
+  }
+
+  void dispose() {
+    _debounce?.cancel();
   }
 }

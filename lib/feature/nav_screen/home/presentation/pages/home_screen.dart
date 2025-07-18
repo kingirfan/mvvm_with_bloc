@@ -27,6 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    homePageViewModel.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final TextEditingController searchController = TextEditingController();
 
@@ -66,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: TextFormField(
                 controller: searchController,
                 onChanged: (value) {
-                  // controller.searchTitle.value = value;
+                  homePageViewModel.onSearchChanged(context, value);
                 },
                 decoration: InputDecoration(
                   filled: true,
@@ -167,37 +173,54 @@ class _HomeScreenState extends State<HomeScreen> {
 
             BlocBuilder<HomePageBloc, HomePageState>(
               builder: (context, state) {
-                if (homePageViewModel.isProductLoading) {
-                  return const SizedBox(height: 40, child: Text('Loadin ....'));
+                // Show loading only after category is selected and loading products
+                if (homePageViewModel.isProductLoading &&
+                    homePageViewModel.selectedCategory != null) {
+                  return const SizedBox(
+                    height: 40,
+                    child: Center(child: Text('Loading...')),
+                  );
                 }
 
-                if (homePageViewModel.productList.isNotEmpty) {
+                // Show error
+                if (homePageViewModel.productError != null) {
+                  return Center(child: Text(homePageViewModel.productError!));
+                }
+
+                // ✅ Show empty state message ONLY if product loading is done AND category is selected
+                if (!homePageViewModel.isProductLoading &&
+                    homePageViewModel.selectedCategory != null &&
+                    homePageViewModel.visibleProducts.isEmpty) {
+                  return Center(
+                    child: Text(homePageViewModel.noProductMessage),
+                  );
+                }
+
+                // Show product grid
+                if (homePageViewModel.visibleProducts.isNotEmpty) {
                   return Expanded(
                     child: GridView.builder(
                       padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
                       physics: const BouncingScrollPhysics(),
                       gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        childAspectRatio: 9 / 11.5,
-                      ),
-                      itemCount: homePageViewModel.productList.length,
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            childAspectRatio: 9 / 11.5,
+                          ),
+                      itemCount: homePageViewModel.visibleProducts.length,
                       itemBuilder: (_, index) {
                         return ItemTile(
-                            item: homePageViewModel.productList[index],
-
+                          item: homePageViewModel.visibleProducts[index],
                         );
                       },
                     ),
                   );
                 }
-                if (homePageViewModel.productError != null) {
-                  return Text(homePageViewModel.productError!);
-                }
 
-                return const SizedBox();
+                // Default fallback
+                return const SizedBox.shrink();
               },
             ),
           ],

@@ -25,11 +25,17 @@ class HomePageProductLoading extends HomePageState {}
 
 class HomePageProductLoaded extends HomePageState {
   final List<ProductModel> productList;
+  final List<ProductModel> filteredList;
+  final String searchQuery;
 
-  const HomePageProductLoaded(this.productList);
+  const HomePageProductLoaded(
+    this.productList, [
+    this.searchQuery = '',
+    this.filteredList = const [],
+  ]);
 
   @override
-  List<Object?> get props => [productList];
+  List<Object?> get props => [productList, filteredList, searchQuery];
 }
 
 class HomePageFailure extends HomePageState {

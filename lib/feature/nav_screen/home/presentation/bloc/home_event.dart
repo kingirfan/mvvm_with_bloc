@@ -14,7 +14,7 @@ class SelectedCategoryEvent extends HomeEvent {
   final CategoryModel category;
   final bool loadProducts;
 
-  SelectedCategoryEvent(this.category, { this.loadProducts = true});
+  SelectedCategoryEvent(this.category, {this.loadProducts = true});
 
   @override
   // TODO: implement props
@@ -29,4 +29,13 @@ class LoadProductEvent extends HomeEvent {
   @override
   // TODO: implement props
   List<Object?> get props => [categoryId];
+}
+
+class SearchProductEvent extends HomeEvent {
+  final String query;
+
+  SearchProductEvent(this.query);
+
+  @override
+  List<Object?> get props => [query];
 }
