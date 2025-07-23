@@ -22,7 +22,8 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     final token = response.data['result']['token'];
-    // await TokenStorage.setToken(token);
+    final userId = response.data['result']['id'];
+    await tokenStorage.setUserId(userId);
     await tokenStorage.setToken(token);
     return token;
   }
@@ -61,8 +62,10 @@ class AuthRepositoryImpl implements AuthRepository {
     );
 
     final token = response.data['result']['token'];
-    // await TokenStorage.setToken(token);
+    final userId = response.data['result']['id'];
+    await tokenStorage.setUserId(userId);
     await tokenStorage.setToken(token);
+    // await TokenStorage.setToken(token);
     return token;
   }
 }
