@@ -5,6 +5,7 @@ import 'package:bloc_with_mvvm/feature/models/product_model.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/bloc/home_bloc.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/bloc/home_event.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/pages/home_screen.dart';
+import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/view_models/HomePageViewModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,16 +19,27 @@ class MockHomePageState extends Mock implements HomePageState {}
 class MockHomePageBloc extends MockBloc<HomeEvent, HomePageState>
     implements HomePageBloc {}
 
+class MockHomePageViewModel extends Mock implements HomePageViewModel {}
+
+class MockBuildContext extends Mock implements BuildContext {}
+
+
 void main() {
   late MockHomePageBloc mockHomePageBloc;
+  late MockHomePageViewModel mockHomePageViewModel;
+  late MockBuildContext mockBuildContext;
 
   setUpAll(() {
     registerFallbackValue(MockHomePageEvent());
     registerFallbackValue(MockHomePageState());
+    registerFallbackValue(MockBuildContext());
   });
 
   setUp(() {
     mockHomePageBloc = MockHomePageBloc();
+    mockBuildContext = MockBuildContext();
+    mockHomePageViewModel = MockHomePageViewModel();
+    when(() => mockHomePageViewModel.onSearchChanged(any(), any())).thenAnswer((_) {});
     when(() => mockHomePageBloc.state).thenReturn(HomePageInitial());
   });
 
@@ -136,5 +148,26 @@ void main() {
     for (var product in productList) {
       expect(find.text(product.title ?? 'No tile found'), findsOneWidget);
     }
+  });
+
+  testWidgets('should call on Search when entered text', (tester) async {
+
+    when(() => mockHomePageViewModel.onSearchChanged(any(), any()))
+        .thenAnswer((_) async {});
+
+    await tester.pumpWidget(createWidgetUnderTest());
+
+    // Act: Enter text into the search field
+    final searchField = find.byKey(const Key('search_field'));
+    await tester.enterText(searchField, 'test query');
+
+    // Assert: Verify immediate call (should not happen due to debounce)
+    verifyNever(() => mockHomePageViewModel.onSearchChanged(any(), any()));
+
+    // Fast-forward 299ms (still no call)
+    await tester.pump(const Duration(milliseconds: 299));
+    verifyNever(() => mockHomePageViewModel.onSearchChanged(any(), any()));
+
+
   });
 }

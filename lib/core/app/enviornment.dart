@@ -15,6 +15,12 @@ class Environment {
   static const String signUp = '$baseUrl/signup';
   static const String validateToken = '$baseUrl/validate-token';
   static const String refreshToken = '$baseUrl/refresh-token';
+
+  // home screen
   static const String getAllCategory = '$baseUrl/get-category-list';
   static const String getAllProducts = '$baseUrl/get-product-list';
+
+  // cart screen
+  static const String addItemsToCart = '$baseUrl/add-item-to-cart';
+
 }

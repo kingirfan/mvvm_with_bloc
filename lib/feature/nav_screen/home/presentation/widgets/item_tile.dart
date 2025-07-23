@@ -112,8 +112,7 @@ class _ItemTileState extends State<ItemTile> {
             child: Material(
               child: InkWell(
                 onTap: () {
-                  switchIcon();
-
+                  //switchIcon();
                   // cartController.addItemToCart(item: widget.item);
 
                  //  widget.cartAnimationMethod(imageGk);

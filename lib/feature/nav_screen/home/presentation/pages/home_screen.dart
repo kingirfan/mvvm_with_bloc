@@ -10,8 +10,8 @@ import '../widgets/category_tile.dart';
 import '../widgets/item_tile.dart';
 
 class HomeScreen extends StatefulWidget {
-  // const HomeScreen({super.key});
   const HomeScreen({Key? key}) : super(key: key ?? const Key('home_screen'));
+
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -70,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: TextFormField(
+                key: const Key('search_field'),
                 controller: searchController,
                 onChanged: (value) {
                   homePageViewModel.onSearchChanged(context, value);
