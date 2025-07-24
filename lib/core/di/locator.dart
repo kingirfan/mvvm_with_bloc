@@ -14,7 +14,8 @@ import '../../feature/auth/domain/usecase/login_usecase.dart';
 import '../../feature/auth/domain/usecase/validate_token_usecase.dart';
 import '../../feature/auth/presentation/bloc/auth_bloc.dart';
 
-import '../../feature/nav_screen/cart/domain/usecase/cart_usecase.dart';
+import '../../feature/nav_screen/cart/domain/usecase/add_to_cart_usecase.dart';
+import '../../feature/nav_screen/cart/domain/usecase/get_all_cart_items_usecase.dart';
 import '../../feature/nav_screen/home/data/repositories/home_repository_impl.dart';
 import '../../feature/nav_screen/home/domain/repository/home_repository.dart';
 import '../../feature/nav_screen/home/domain/usecase/category_usecase.dart';
@@ -32,7 +33,9 @@ Future<void> setUpLocator() async {
   sl.registerLazySingleton<AuthRepository>(
     () => AuthRepositoryImpl(sl(), sl()),
   );
-  sl.registerLazySingleton<CartRepository>(() => CartRepositoriesImpl(sl()));
+  sl.registerLazySingleton<CartRepository>(
+    () => CartRepositoriesImpl(sl(), sl()),
+  );
 
   // Dio for TokenValidator only (no AuthInterceptor)
   sl.registerLazySingleton<Dio>(
@@ -81,7 +84,8 @@ Future<void> setUpLocator() async {
   sl.registerLazySingleton(() => ProductUseCase(sl<HomeRepository>()));
 
   // Cart UseCase CartUseCase
-  sl.registerLazySingleton(() => CartUseCase(sl<CartRepository>()));
+  sl.registerLazySingleton(() => AddToCartUseCase(sl<CartRepository>()));
+  sl.registerLazySingleton(() => GetAllCartItemsUseCase(sl<CartRepository>()));
 
   // Auth BLoCs
   sl.registerFactory(
@@ -98,5 +102,5 @@ Future<void> setUpLocator() async {
   );
 
   // Cart Bloc
-  sl.registerFactory(() => CartBloc(cartUseCase: sl()));
+  sl.registerFactory(() => CartBloc(cartUseCase: sl(),getAllCartItemsUseCase: sl()));
 }

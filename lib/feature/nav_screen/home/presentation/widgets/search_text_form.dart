@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SearchFormText extends StatelessWidget {
-  SearchFormText({Key? key}) : super(key: key);
+  const SearchFormText({super.key});
 
   // final controller = Get.find<ProductController>();
 

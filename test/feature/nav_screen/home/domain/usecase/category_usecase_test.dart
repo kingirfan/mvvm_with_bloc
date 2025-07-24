@@ -17,7 +17,7 @@ void main() {
 
   test('test should return a list when it is successful', () async {
     final expectedList = [
-      CategoryModel.fromJson({"title": "Cereais", "id": "aGN3NQKlXp"}),
+      CategoryModel.fromJson(const {"title": "Cereais", "id": "aGN3NQKlXp"}),
     ];
 
     when(

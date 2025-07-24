@@ -1,3 +1,4 @@
+import 'package:bloc_with_mvvm/feature/nav_screen/cart/presentation/pages/cart_screen.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/category/presentation/pages/category_screen.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/favorite/presentation/pages/fav_screen.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/settings/presentation/pages/settings_screen.dart';
@@ -23,7 +24,7 @@ class MainScreen extends StatelessWidget {
               index: selectedIndex,
               children: const [
                 HomeScreen(),
-                CategoryScreen(),
+                CartScreen(),
                 FavoriteScreen(),
                 SettingsScreen(),
               ],
@@ -42,7 +43,7 @@ class MainScreen extends StatelessWidget {
               },
               items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home_filled), label: 'Home'),
-                BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Category'),
+                BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
                 BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorite'),
                 BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
               ],

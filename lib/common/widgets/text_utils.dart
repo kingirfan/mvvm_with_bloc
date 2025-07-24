@@ -8,14 +8,14 @@ class TextUtils extends StatelessWidget {
   final FontWeight fontWeight;
   final TextDecoration underLine;
 
-  TextUtils({
+  const TextUtils({
     required this.fontSize,
     required this.fontWeight,
     required this.text,
     required this.color,
     required this.underLine,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

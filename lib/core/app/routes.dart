@@ -36,12 +36,12 @@ GoRouter buildRouter({String initialLocation = '/splash'}) {
         pageBuilder: (context, state) =>
             MaterialPage(key: state.pageKey, child: const SignUpPage()),
       ),
-      GoRoute(
-        path: '/home',
-        name: 'home',
-        pageBuilder: (context, state) =>
-            MaterialPage(key: state.pageKey, child: const HomeScreen()),
-      ),
+      // GoRoute(
+      //   path: '/home',
+      //   name: 'home',
+      //   pageBuilder: (context, state) =>
+      //       MaterialPage(key: state.pageKey, child: const HomeScreen()),
+      // ),
       GoRoute(
         path: '/main_screen',
         name: 'main_screen',

@@ -6,7 +6,6 @@ import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/bloc/home_bl
 import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/bloc/home_event.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/pages/home_screen.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/home/presentation/view_models/HomePageViewModel.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -27,7 +26,7 @@ class MockBuildContext extends Mock implements BuildContext {}
 void main() {
   late MockHomePageBloc mockHomePageBloc;
   late MockHomePageViewModel mockHomePageViewModel;
-  late MockBuildContext mockBuildContext;
+  // late MockBuildContext mockBuildContext;
 
   setUpAll(() {
     registerFallbackValue(MockHomePageEvent());
@@ -37,7 +36,7 @@ void main() {
 
   setUp(() {
     mockHomePageBloc = MockHomePageBloc();
-    mockBuildContext = MockBuildContext();
+    // mockBuildContext = MockBuildContext();
     mockHomePageViewModel = MockHomePageViewModel();
     when(() => mockHomePageViewModel.onSearchChanged(any(), any())).thenAnswer((_) {});
     when(() => mockHomePageBloc.state).thenReturn(HomePageInitial());

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../common/custom_shimmer.dart';
 import '../../../../../common/widgets/appname_widget.dart';
 import '../../../../../core/theme/custom_colors.dart';
+import '../../../cart/presentation/bloc/cart_bloc.dart';
 import '../bloc/home_bloc.dart';
 import '../view_models/HomePageViewModel.dart';
 import '../widgets/category_tile.dart';
@@ -11,7 +12,6 @@ import '../widgets/item_tile.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key ?? const Key('home_screen'));
-
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Badge(
                   backgroundColor: CustomColors.customContrastColor,
                   label: const Text(
-                    '6',
+                    '6 ',
                     style: TextStyle(color: Colors.white, fontSize: 12),
                   ),
                   child: Icon(

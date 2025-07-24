@@ -1,5 +1,7 @@
 import 'package:bloc_with_mvvm/feature/models/product_model.dart';
+import 'package:bloc_with_mvvm/feature/nav_screen/cart/presentation/bloc/cart_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../../core/theme/custom_colors.dart';
 import '../../../../../core/utils/utils_service.dart';
@@ -114,7 +116,7 @@ class _ItemTileState extends State<ItemTile> {
                 onTap: () {
                   //switchIcon();
                   // cartController.addItemToCart(item: widget.item);
-
+                  // context.read<CartBloc>().add(AddItemsToCart(productId: widget.item.id!,quantity: 1));
                  //  widget.cartAnimationMethod(imageGk);
                 },
                 child: Ink(
