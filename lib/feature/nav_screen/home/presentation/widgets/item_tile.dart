@@ -1,5 +1,6 @@
 import 'package:bloc_with_mvvm/feature/models/product_model.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/cart/presentation/bloc/cart_bloc.dart';
+import 'package:bloc_with_mvvm/feature/nav_screen/cart/presentation/view_models/cart_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,6 +9,7 @@ import '../../../../../core/utils/utils_service.dart';
 
 class ItemTile extends StatefulWidget {
   final ProductModel item;
+
   // final void Function(GlobalKey) cartAnimationMethod;
 
   const ItemTile({
@@ -24,7 +26,6 @@ class _ItemTileState extends State<ItemTile> {
   final GlobalKey imageGk = GlobalKey();
 
   final UtilsServices utilsServices = UtilsServices();
-
 
   IconData tileIcon = Icons.add_shopping_cart_outlined;
 
@@ -61,7 +62,8 @@ class _ItemTileState extends State<ItemTile> {
                       child: Image.network(
                         widget.item.picture ?? '',
                         key: imageGk,
-                        errorBuilder: (_, __, ___) => const Icon(Icons.broken_image),
+                        errorBuilder: (_, __, ___) =>
+                        const Icon(Icons.broken_image),
                       ),
                     ),
                   ),
@@ -112,23 +114,23 @@ class _ItemTileState extends State<ItemTile> {
               topRight: Radius.circular(20),
             ),
             child: Material(
-              child: InkWell(
-                onTap: () {
-                  //switchIcon();
-                  // cartController.addItemToCart(item: widget.item);
-                  // context.read<CartBloc>().add(AddItemsToCart(productId: widget.item.id!,quantity: 1));
-                 //  widget.cartAnimationMethod(imageGk);
+              child: BlocListener<CartBloc, CartState>(
+                listener: (context, state) {
+
                 },
-                child: Ink(
-                  height: 40,
-                  width: 35,
-                  decoration: BoxDecoration(
-                    color: CustomColors.customSwatchColor,
-                  ),
-                  child: Icon(
-                    tileIcon,
-                    color: Colors.white,
-                    size: 20,
+                child: InkWell(
+                  onTap: () {
+                    switchIcon();
+                    CartViewModel cartViewModel = CartViewModel();
+                    cartViewModel.addToCart(context, widget.item);
+                  },
+                  child: Ink(
+                    height: 40,
+                    width: 35,
+                    decoration: BoxDecoration(
+                      color: CustomColors.customSwatchColor,
+                    ),
+                    child: Icon(tileIcon, color: Colors.white, size: 20),
                   ),
                 ),
               ),

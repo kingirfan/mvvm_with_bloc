@@ -5,9 +5,8 @@ class AddToCartUseCase {
 
   final CartRepository cartRepository;
 
-  Future<String> call({required int quantity, required String productId}) {
+  Future<String> call({required String productId}) {
     return cartRepository.addItemsToCart(
-      quantity: quantity,
       productId: productId,
     );
   }

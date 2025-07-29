@@ -8,15 +8,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../nav_screen/home/presentation/pages/home_screen.dart';
 import '../bloc/bottom_bloc.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   final BottomNavBloc? bloc;
 
   const MainScreen({super.key, this.bloc});
 
   @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  @override
   Widget build(BuildContext context) {
     return BlocProvider<BottomNavBloc>(
-      create: (_) => bloc ?? BottomNavBloc(),
+      create: (_) => widget.bloc ?? BottomNavBloc(),
       child: Scaffold(
         body: BlocBuilder<BottomNavBloc, int>(
           builder: (context, selectedIndex) {

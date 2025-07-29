@@ -24,4 +24,8 @@ class CartModel {
     }
     return data;
   }
+
+  double totalPrice() => productModel!.price! * quantity!;
 }
+
+

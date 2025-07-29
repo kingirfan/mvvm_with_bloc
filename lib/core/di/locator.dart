@@ -3,6 +3,7 @@ import 'package:bloc_with_mvvm/core/utils/token_storage.dart';
 import 'package:bloc_with_mvvm/feature/auth/domain/usecase/sign_up_usecase.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/cart/data/repositories/cart_repositories_impl.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/cart/domain/repository/cart_repository.dart';
+import 'package:bloc_with_mvvm/feature/nav_screen/cart/domain/usecase/update_quantity_usecase.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/cart/presentation/bloc/cart_bloc.dart';
 import 'package:bloc_with_mvvm/feature/nav_screen/home/domain/usecase/product_usecase.dart';
 import 'package:dio/dio.dart';
@@ -86,6 +87,7 @@ Future<void> setUpLocator() async {
   // Cart UseCase CartUseCase
   sl.registerLazySingleton(() => AddToCartUseCase(sl<CartRepository>()));
   sl.registerLazySingleton(() => GetAllCartItemsUseCase(sl<CartRepository>()));
+  sl.registerLazySingleton(() => UpdateQuantityUseCase(sl<CartRepository>()));
 
   // Auth BLoCs
   sl.registerFactory(
@@ -102,5 +104,11 @@ Future<void> setUpLocator() async {
   );
 
   // Cart Bloc
-  sl.registerFactory(() => CartBloc(cartUseCase: sl(),getAllCartItemsUseCase: sl()));
+  sl.registerFactory(
+    () => CartBloc(
+      addItemCartUseCase: sl(),
+      getAllCartItemsUseCase: sl(),
+      updateQuantityUseCase: sl(),
+    ),
+  );
 }

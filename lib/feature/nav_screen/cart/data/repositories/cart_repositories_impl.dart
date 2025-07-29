@@ -13,16 +13,13 @@ class CartRepositoriesImpl implements CartRepository {
   CartRepositoriesImpl(this._dio, this._tokenStorage);
 
   @override
-  Future<String> addItemsToCart({
-    required int quantity,
-    required String productId,
-  }) async {
+  Future<String> addItemsToCart({required String productId}) async {
     final userId = await _tokenStorage.getUserId();
-    print('userId $userId');
+    print('userId : $userId');
     final response = await _dio.post(
       Environment.addItemsToCart,
       options: Options(headers: Environment.defaultHeaders),
-      data: {'user': userId, 'quantity': quantity, 'productId': productId},
+      data: {'user': userId, 'quantity': 1, 'productId': productId},
     );
 
     final id = response.data['result']['id'];
@@ -32,6 +29,7 @@ class CartRepositoriesImpl implements CartRepository {
   @override
   Future<List<CartModel>> getAllCarts() async {
     final userId = await _tokenStorage.getUserId();
+    print('userId : $userId');
     final response = await _dio.post(
       Environment.getAllItemsFromCart,
       options: Options(headers: Environment.defaultHeaders),
@@ -41,5 +39,24 @@ class CartRepositoriesImpl implements CartRepository {
     final List data = response.data['result'];
 
     return data.map((e) => CartModel.fromJson(e)).toList();
+  }
+
+  @override
+  Future<int?> updateCartQuantity({
+    required String cartItemId,
+    required int quantity,
+  }) async {
+    final response = await _dio.post(
+      Environment.updateCartItems,
+      options: Options(headers: Environment.defaultHeaders),
+      data: {'cartItemId': cartItemId, 'quantity': quantity},
+    );
+
+    if (response.statusCode == 200) {
+      return 200;
+    } else {
+      throw Exception("Failed to update quantity");
+    }
+
   }
 }

@@ -23,4 +23,5 @@ class Environment {
   // cart screen
   static const String getAllItemsFromCart = '$baseUrl/get-cart-items';
   static const String addItemsToCart = '$baseUrl/add-item-to-cart';
+  static const String updateCartItems = '$baseUrl/modify-item-quantity';
 }

@@ -39,24 +39,40 @@ part of 'cart_bloc.dart';
 
 class CartState {
   final bool isCartLoading;
+  final bool addCartLoading;
+  final bool updateCartLoading;
   final List<CartModel> cartList;
-  final String cartError;
+  final String? cartError;
+  final String? addError;
+  final String? updateError;
 
   const CartState({
     this.isCartLoading = false,
+    this.addCartLoading = false,
+    this.updateCartLoading = false,
     required this.cartList,
-    required this.cartError,
+    this.cartError,
+    this.addError,
+    this.updateError,
   });
 
   CartState copyWith({
     bool? isCartLoading,
+    bool? addCartLoading,
+    bool? updateCartLoading,
     List<CartModel>? cartList,
     String? cartError,
+    String? addError,
+    String? updateError,
   }) {
     return CartState(
       isCartLoading: isCartLoading ?? this.isCartLoading,
+      addCartLoading: addCartLoading ?? this.addCartLoading,
+      updateCartLoading: updateCartLoading ?? this.updateCartLoading,
       cartList: cartList ?? this.cartList,
       cartError: cartError ?? this.cartError,
+      addError: addError,
+      updateError: updateError,
     );
   }
 }
